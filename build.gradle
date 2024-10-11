@@ -1,0 +1,16 @@
+plugins {
+    id 'ca.stellardrift.gitpatcher' version '1.1.0'
+}
+
+patches {
+    // The submodule path you just created
+    submodule = 'upstream'
+    // The target folder for the patched repositories
+    target = file('target')
+    // The folder where the patches are saved
+    patches = file('patches')
+}
+
+gitPatcher {
+    setAMExtraArguments(List.of("--ignore-space-change")) // This makes our patch applicable
+}
