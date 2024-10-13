@@ -81,7 +81,7 @@ index a5c28e2adabf30332c3cefa47039bb92f4e9da75..cdc44d6f6625cae245f492a0ea217863
  
      <ciManagement>
 diff --git a/v1_20/pom.xml b/v1_20/pom.xml
-index 50b8cebb62b65349a7d4f711ed887f6e7f33d3a6..99b109d5d501b5811e3e7d6575bcb7f03a20cab1 100644
+index 50b8cebb62b65349a7d4f711ed887f6e7f33d3a6..e3e74853ef94f989d41870b7704147adc87535f1 100644
 --- a/v1_20/pom.xml
 +++ b/v1_20/pom.xml
 @@ -19,13 +19,13 @@
@@ -100,3 +100,28 @@ index 50b8cebb62b65349a7d4f711ed887f6e7f33d3a6..99b109d5d501b5811e3e7d6575bcb7f0
              <classifier>remapped-mojang</classifier>
              <scope>provided</scope>
          </dependency>
+@@ -45,9 +45,9 @@
+                         </goals>
+                         <id>remap-obf</id>
+                         <configuration>
+-                            <srgIn>org.spigotmc:minecraft-server:1.20.6-R0.1-SNAPSHOT:txt:maps-mojang</srgIn>
++                            <srgIn>org.spigotmc:minecraft-server:1.20.1-R0.1-SNAPSHOT:txt:maps-mojang</srgIn> <!-- Backport - Use 1.20.1 for this module -->
+                             <reverse>true</reverse>
+-                            <remappedDependencies>org.spigotmc:spigot:1.20.6-R0.1-SNAPSHOT:jar:remapped-mojang</remappedDependencies>
++                            <remappedDependencies>org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT:jar:remapped-mojang</remappedDependencies> <!-- Backport - Use 1.20.1 for this module -->
+                             <remappedArtifactAttached>true</remappedArtifactAttached>
+                             <remappedClassifierName>remapped-obf</remappedClassifierName>
+                         </configuration>
+@@ -60,8 +60,10 @@
+                         <id>remap-spigot</id>
+                         <configuration>
+                             <inputFile>${project.build.directory}/${project.artifactId}-${project.version}-remapped-obf.jar</inputFile>
+-                            <srgIn>org.spigotmc:minecraft-server:1.20.6-R0.1-SNAPSHOT:csrg:maps-spigot</srgIn>
+-                            <remappedDependencies>org.spigotmc:spigot:1.20.6-R0.1-SNAPSHOT:jar:remapped-obf</remappedDependencies>
++                            <!-- Backport start - Use 1.20.1 for this module -->
++                            <srgIn>org.spigotmc:minecraft-server:1.20.1-R0.1-SNAPSHOT:csrg:maps-spigot</srgIn>
++                            <remappedDependencies>org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT:jar:remapped-obf</remappedDependencies>
++                            <!-- Backport end -->
+                         </configuration>
+                     </execution>
+                 </executions>
