@@ -277,7 +277,7 @@ index 4fbfa0966b6a8b6dc3213dd9f52e94643e64a2d5..791f34de52822c24e1028c9cfd0ea309
  
      private byte yawToDirection(double yaw) {
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
-index ea0f18a6764ff5e6d767894baf69c5f2a44b19b5..c49d9f9979930eb39c9850ba3cd578e13360f9e7 100644
+index ea0f18a6764ff5e6d767894baf69c5f2a44b19b5..55e2474da691cfbccaf0a720418200f4765287e8 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
 @@ -33,7 +33,7 @@ import com.denizenscript.denizencore.utilities.debugging.Debug;
@@ -289,7 +289,19 @@ index ea0f18a6764ff5e6d767894baf69c5f2a44b19b5..c49d9f9979930eb39c9850ba3cd578e1
  import com.mojang.brigadier.exceptions.CommandSyntaxException;
  import net.md_5.bungee.api.ChatColor;
  import net.md_5.bungee.api.chat.BaseComponent;
-@@ -209,14 +209,19 @@ public class Handler extends NMSHandler {
+@@ -151,7 +151,10 @@ public class Handler extends NMSHandler {
+ 
+     @Override
+     public boolean isCorrectMappingsCode() {
+-        return ((CraftMagicNumbers) CraftMagicNumbers.INSTANCE).getMappingsVersion().equals("ee13f98a43b9c5abffdcc0bb24154460");
++        // Backport start - Different mappings code
++//        return ((CraftMagicNumbers) CraftMagicNumbers.INSTANCE).getMappingsVersion().equals("ee13f98a43b9c5abffdcc0bb24154460");
++        return ((CraftMagicNumbers) CraftMagicNumbers.INSTANCE).getMappingsVersion().equals("bcf3dcb22ad42792794079f9443df2c0");
++        // Backport end
+     }
+ 
+     @Override
+@@ -209,14 +212,19 @@ public class Handler extends NMSHandler {
              }
              Property textures = profile.getProperties().containsKey("textures") ? Iterables.getFirst(profile.getProperties().get("textures"), null) : null;
              if (textures == null || !textures.hasSignature() || profile.getName() == null || profile.getId() == null) {
@@ -310,7 +322,7 @@ index ea0f18a6764ff5e6d767894baf69c5f2a44b19b5..c49d9f9979930eb39c9850ba3cd578e1
          }
          catch (Exception e) {
              if (CoreConfiguration.debugVerbose) {
-@@ -298,8 +303,10 @@ public class Handler extends NMSHandler {
+@@ -298,8 +306,10 @@ public class Handler extends NMSHandler {
          GameProfile gameProfile = ((CraftPlayer) player).getProfile();
          Property property = Iterables.getFirst(gameProfile.getProperties().get("textures"), null);
          return new PlayerProfile(gameProfile.getName(), gameProfile.getId(),
@@ -323,7 +335,7 @@ index ea0f18a6764ff5e6d767894baf69c5f2a44b19b5..c49d9f9979930eb39c9850ba3cd578e1
      }
  
      @Override
-@@ -360,7 +367,7 @@ public class Handler extends NMSHandler {
+@@ -360,7 +370,7 @@ public class Handler extends NMSHandler {
                      tag.put("tag", TagParser.parseTag(item.getTag().getNbt()));
                  }
                  // TODO: 1.20.6: use components and fallback to creating item from tag when custom NBT is specified
