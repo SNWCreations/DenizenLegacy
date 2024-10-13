@@ -5,6 +5,277 @@ Date: Sun, 13 Oct 2024 15:41:30 +0800
 Subject: [PATCH] feat: the backport
 
 
+diff --git a/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java b/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java
+index f47fd55f95fdcef95429c67115e8c9d51eaf83a9..bbe4ab979bf6fd59e06b0de26805df402ffebf0b 100644
+--- a/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java
++++ b/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java
+@@ -75,9 +75,13 @@ public class PaperModule {
+         ScriptEvent.registerScriptEvent(PlayerSelectsStonecutterRecipeScriptEvent.class);
+         ScriptEvent.registerScriptEvent(PlayerLecternPageChangeScriptEvent.class);
+         ScriptEvent.registerScriptEvent(PlayerSpectatesEntityScriptEvent.class);
++        // Backport start - Newer API does not exist
++        /*
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20)) {
+             ScriptEvent.registerScriptEvent(PlayerShieldDisableScriptEvent.class);
+         }
++        */
++        // Backport end
+         ScriptEvent.registerScriptEvent(PlayerStopsSpectatingScriptEvent.class);
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_19)) {
+             ScriptEvent.registerScriptEvent(PlayerTracksEntityScriptEvent.class);
+diff --git a/paper/src/main/java/com/denizenscript/denizen/paper/events/PlayerShieldDisableScriptEvent.java b/paper/src/main/java/com/denizenscript/denizen/paper/events/PlayerShieldDisableScriptEvent.java.ignored
+similarity index 100%
+rename from paper/src/main/java/com/denizenscript/denizen/paper/events/PlayerShieldDisableScriptEvent.java
+rename to paper/src/main/java/com/denizenscript/denizen/paper/events/PlayerShieldDisableScriptEvent.java.ignored
+diff --git a/paper/src/main/java/com/denizenscript/denizen/paper/utilities/PaperAPIToolsImpl.java b/paper/src/main/java/com/denizenscript/denizen/paper/utilities/PaperAPIToolsImpl.java
+index bccb44dc8abd86176b34652ade6394535c55455c..670609eeccd83eba0fc0b4057cddbcdc8f2648ec 100644
+--- a/paper/src/main/java/com/denizenscript/denizen/paper/utilities/PaperAPIToolsImpl.java
++++ b/paper/src/main/java/com/denizenscript/denizen/paper/utilities/PaperAPIToolsImpl.java
+@@ -199,10 +199,14 @@ public class PaperAPIToolsImpl extends PaperAPITools {
+     }
+ 
+     public static RecipeChoice parseBrewingRecipeChoice(ItemScriptContainer container, String choice, TagContext context) {
++        // Backport start - Newer MC methods do not exist
++        /*
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20) && choice.startsWith("matcher:")) {
+             String matcher = choice.substring("matcher:".length());
+             return PotionMix.createPredicateChoice(item -> new ItemTag(item).tryAdvancedMatcher(matcher, context));
+         }
++        */
++        // Backport end
+         boolean exact = true;
+         if (choice.startsWith("material:")) {
+             choice = choice.substring("material:".length());
+@@ -232,10 +236,14 @@ public class PaperAPIToolsImpl extends PaperAPITools {
+         return potionMixes.get(recipeId).ingredientMatcher();
+     }
+ 
++    // Backport start - Newer MC methods do not exist
++    /*
+     @Override
+     public RecipeChoice createPredicateRecipeChoice(Predicate<ItemStack> predicate) {
+         return PotionMix.createPredicateChoice(predicate);
+     }
++    */
++    // Backport end
+ 
+     @Override
+     public String getDeathMessage(PlayerDeathEvent event) {
+@@ -381,8 +389,12 @@ public class PaperAPIToolsImpl extends PaperAPITools {
+         return clientBrand != null ? clientBrand : "unknown";
+     }
+ 
++    // Backport start - Newer API does not exist
++    /*
+     @Override
+     public boolean canUseEquipmentSlot(LivingEntity entity, EquipmentSlot slot) {
+         return NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20) ? entity.canUseEquipmentSlot(slot) : super.canUseEquipmentSlot(entity, slot);
+     }
++    */
++    // Backport end
+ }
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/BlockHelper.java b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/BlockHelper.java
+index 5d4ca461603babc0fef738ff68fbb584552dc28a..6fa7b6356d70a302a2ac420161d07b6cd1ddea86 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/BlockHelper.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/BlockHelper.java
+@@ -88,9 +88,14 @@ public interface BlockHelper {
+         spawner.setSpawnedType(entity.getBukkitEntityType());
+     }
+ 
++    // Backport start - Newer API does not exist
++    /*
+     default Color getMapColor(Block block) { // TODO: once 1.20 is the minimum supported version, remove from NMS
+         return block.getBlockData().getMapColor();
+     }
++    */
++    Color getMapColor(Block block);
++    // Backport end
+ 
+     default void setVanillaTags(Material material, Set<String> tags) {
+         throw new UnsupportedOperationException();
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
+index a39d9b8813b266d998fb49151101980b0f9f1616..bfed055042154c7290911037d76888b522ee632d 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
+@@ -381,9 +381,14 @@ public abstract class EntityHelper {
+ 
+     public abstract void setBoundingBox(Entity entity, BoundingBox box);
+ 
++    // Backport start - Newer API does not exist
++    /*
+     public List<Player> getPlayersThatSee(Entity entity) { // TODO: once the minimum supported version is 1.20, remove from NMS
+         return List.copyOf(entity.getTrackedBy());
+     }
++    */
++    public abstract List<Player> getPlayersThatSee(Entity entity);
++    // Backport end
+ 
+     public void sendAllUpdatePackets(Entity entity) {
+         throw new UnsupportedOperationException();
+@@ -480,7 +485,7 @@ public abstract class EntityHelper {
+ 
+     public static class EntityEntersVehicleScriptEventImpl extends EntityEntersVehicleScriptEvent {
+         @EventHandler
+-        public void onEntityMount(EntityMountEvent event) {
++        public void onEntityMount(org.spigotmc.event.entity.EntityMountEvent event) { // Backport - EntityMountEvent was a Spigot event in MC 1.20.1
+             fire(event, event.getMount());
+         }
+     }
+@@ -491,7 +496,7 @@ public abstract class EntityHelper {
+ 
+     public static class EntityExitsVehicleScriptEventImpl extends EntityExitsVehicleScriptEvent {
+         @EventHandler
+-        public void onEntityMount(EntityDismountEvent event) {
++        public void onEntityMount(org.spigotmc.event.entity.EntityDismountEvent event) { // Backport - EntityDismountEvent was a Spigot event in MC 1.20.1
+             fire(event, event.getDismounted());
+         }
+     }
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java
+index dbcb0e6043adc2d889efa70bf4df2449003aac2b..d2baca2863544363ab59417aa408ba63cf2716a9 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java
+@@ -168,9 +168,13 @@ public class PropertyRegistry {
+         }
+         PropertyParser.registerProperty(EntityStrength.class, EntityTag.class);
+         PropertyParser.registerProperty(EntityTame.class, EntityTag.class);
++        // Backport start - Newer API does not exist
++        /*
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20)) {
+             PropertyParser.registerProperty(EntityTeleportDuration.class, EntityTag.class);
+         }
++        */
++        // Backport end
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_19)) {
+             PropertyParser.registerProperty(EntityText.class, EntityTag.class);
+             PropertyParser.registerProperty(EntityTextShadowed.class, EntityTag.class);
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
+index f72fe102762f26abbbc91bf2efe2194b043f0d33..7cc5f39b42def37842adc9b5bd8aba7607e84ebc 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
+@@ -150,10 +150,18 @@ public class EntityColor extends EntityProperty<ElementTag> {
+             Cat cat = as(Cat.class);
+             ListTag list = mechanism.valueAsType(ListTag.class);
+             String catTypeStr = list.get(0);
++            // Backport start - We're just legacy
++            /*
+             Cat.Type catType = LegacyNamingHelper.convert(Cat.Type.class, catTypeStr);
+             if (catType != null) {
+                 cat.setCatType(catType);
+             }
++            */
++            ElementTag catType = new ElementTag(list.get(0));
++            if (catType.matchesEnum(Cat.Type.class)) {
++                cat.setCatType(catType.asEnum(Cat.Type.class));
++            }
++            // Backport end
+             else {
+                 mechanism.echoError("Invalid cat type specified: " + catTypeStr);
+             }
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java.ignored
+similarity index 100%
+rename from plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java
+rename to plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java.ignored
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java
+index 93bbed2f038006f3d82cb8eb3e65a989664a1510..66cff274d292ddbb9bbfd5b0a9375786cc0cc775 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java
+@@ -49,9 +49,14 @@ public class ItemPotion extends ItemProperty<ObjectTag> {
+         ListTag result = new ListTag(potionEffects.size() + 1);
+         if (getItemMeta() instanceof PotionMeta potionMeta) {
+             MapTag base = new MapTag();
++            // Backport start - No more registries in MC 1.20.1
++            /*
+             if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20)) {
+                 base.putObject("base_type", new ElementTag(Utilities.namespacedKeyToString(potionMeta.getBasePotionType().getKey()), true));
+             }
++            */
++            if (false) {}
++            // Backport end
+             else {
+                 includeExtras = true;
+             }
+@@ -162,6 +167,8 @@ public class ItemPotion extends ItemProperty<ObjectTag> {
+             ObjectTag firstObj = data.remove(0);
+             if (firstObj.canBeType(MapTag.class)) {
+                 MapTag baseEffect = firstObj.asType(MapTag.class, mechanism.context);
++                // Backport start - Newer API does not exist
++                /*
+                 if (baseEffect.containsKey("base_type")) {
+                     ElementTag baseTypeElement = baseEffect.getElement("base_type");
+                     PotionType type = Registry.POTION.get(Utilities.parseNamespacedKey(baseTypeElement.asString()));
+@@ -174,6 +181,9 @@ public class ItemPotion extends ItemProperty<ObjectTag> {
+                     }
+                     potionMeta.setBasePotionType(type);
+                 }
++                */
++                if (false) {}
++                // Backport end
+                 else {
+                     applyLegacyMapBasePotionData(baseEffect, potionMeta, mechanism);
+                 }
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/BukkitCommandRegistry.java b/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/BukkitCommandRegistry.java
+index 3be94dbab9815f5dbf0684cb145820dffbc24d5f..ff930c64c45ab0240f259eec79a8bfaa792bc7d7 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/BukkitCommandRegistry.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/BukkitCommandRegistry.java
+@@ -175,9 +175,13 @@ public class BukkitCommandRegistry {
+         registerCommand(SignCommand.class);
+         registerCommand(StrikeCommand.class);
+         registerCommand(SwitchCommand.class);
++        // Backport start - /tick was not added in MC 1.20.1 but newer 1.20 patch
++        /*
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20)) {
+             registerCommand(TickCommand.class);
+         }
++        */
++        // Backport end
+         registerCommand(TimeCommand.class);
+         registerCommand(WeatherCommand.class);
+         registerCommand(WorldBorderCommand.class);
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/world/TickCommand.java b/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/world/TickCommand.java.ignored
+similarity index 100%
+rename from plugin/src/main/java/com/denizenscript/denizen/scripts/commands/world/TickCommand.java
+rename to plugin/src/main/java/com/denizenscript/denizen/scripts/commands/world/TickCommand.java.ignored
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/tags/core/ServerTagBase.java b/plugin/src/main/java/com/denizenscript/denizen/tags/core/ServerTagBase.java
+index a379d8e1f41f2ffb9178531a09f20a90fe610ed0..baae689b9282f533355af607ba8ece55ac2acad9 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/tags/core/ServerTagBase.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/tags/core/ServerTagBase.java
+@@ -913,15 +913,20 @@ public class ServerTagBase extends PseudoObjectTagBase<ServerTagBase> {
+         // This is only their Bukkit enum names, as seen at <@link url https://hub.spigotmc.org/javadocs/spigot/org/bukkit/map/MapCursor.Type.html>.
+         // -->
+         // TODO once 1.20 is the minimum supported version, replace with direct registry-based handling
++        // Backport start - No more registries in MC 1.20.1
++        /*
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20)) {
+             tagProcessor.registerStaticTag(ListTag.class, "map_cursor_types", (attribute, object) -> {
+                 listDeprecateWarn(attribute);
+                 return Utilities.registryKeys(Registry.MAP_DECORATION_TYPE);
+             }, "list_map_cursor_types");
+         }
++        */
++        if (false) {}
+         else {
+             registerEnumListTag("map_cursor_types", (Class<? extends Enum<?>>) (Class<?>) MapCursor.Type.class, "list_map_cursor_types");
+         }
++        // Backport end
+ 
+         // <--[tag]
+         // @attribute <server.world_types>
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java b/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
+index 4fbfa0966b6a8b6dc3213dd9f52e94643e64a2d5..791f34de52822c24e1028c9cfd0ea3090db0548d 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
+@@ -27,7 +27,10 @@ public class MapCursor extends MapObject {
+     }
+ 
+     public org.bukkit.map.MapCursor.Type getType(PlayerTag player) {
+-        return LegacyNamingHelper.convert(org.bukkit.map.MapCursor.Type.class, tag(typeTag, player));
++        // Backport start - We're just legacy
++//        return LegacyNamingHelper.convert(org.bukkit.map.MapCursor.Type.class, tag(typeTag, player));
++        return org.bukkit.map.MapCursor.Type.valueOf(tag(typeTag, player).toUpperCase());
++        // Backport end
+     }
+ 
+     private byte yawToDirection(double yaw) {
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
 index ea0f18a6764ff5e6d767894baf69c5f2a44b19b5..c49d9f9979930eb39c9850ba3cd578e13360f9e7 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
@@ -438,7 +709,7 @@ index 2a885152ecb84743068e19f87440b11e445f7514..9e8705018974b742dcb6f1af5218b238
 +    // Backport end
  }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/BlockHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/BlockHelperImpl.java
-index 3f109be610bc0d4c99c7bb62d7c1d69d5e4ad591..52914660e6a0d731cfbcecee03f9a8da961987e8 100644
+index 3f109be610bc0d4c99c7bb62d7c1d69d5e4ad591..1a2d5b0b5a74114d91512efcc0ee17de62c44547 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/BlockHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/BlockHelperImpl.java
 @@ -18,7 +18,7 @@ import net.minecraft.core.BlockPos;
@@ -522,7 +793,22 @@ index 3f109be610bc0d4c99c7bb62d7c1d69d5e4ad591..52914660e6a0d731cfbcecee03f9a8da
              Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
              EntityTag entityTag = new EntityTag(bukkitEntity);
              entityTag.isFake = true;
-@@ -260,7 +275,7 @@ public class BlockHelperImpl implements BlockHelper {
+@@ -252,6 +267,14 @@ public class BlockHelperImpl implements BlockHelper {
+         }
+     }
+ 
++    // Backport start - Newer API does not exist
++    @Override
++    public org.bukkit.Color getMapColor(Block block) {
++        CraftBlock craftBlock = (CraftBlock) block;
++        return org.bukkit.Color.fromRGB(craftBlock.getNMS().getMapColor(craftBlock.getHandle(), craftBlock.getPosition()).col);
++    }
++    // Backport end
++
+     @Override
+     public void setSpawnerCustomRules(CreatureSpawner spawner, int skyMin, int skyMax, int blockMin, int blockMax) {
+         try {
+@@ -260,7 +283,7 @@ public class BlockHelperImpl implements BlockHelper {
              BaseSpawner nmsSpawner = nmsSnapshot.getSpawner();
              SpawnData toSpawn = nmsSpawner.nextSpawnData;
              SpawnData.CustomSpawnRules rules = skyMin == -1 ? null : new SpawnData.CustomSpawnRules(new InclusiveRange<>(skyMin, skyMax), new InclusiveRange<>(blockMin, blockMax));
@@ -632,7 +918,7 @@ index 234f235a9d1b37a977c24ace5d23ee82b27876ac..4fda597729b3bfaf1fbdee4fe3ed9c2c
                  BuiltInRegistries.ENCHANTMENT.freeze();
              }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
-index 872a8becabc37c43d1f671bcd2f51143189f0b67..ed9f15c33eb6965d34dcd073a7ce3524788e3cfd 100644
+index 872a8becabc37c43d1f671bcd2f51143189f0b67..e2c6578dd6c3d2dc23a83258050173dd7dc68ea1 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
 @@ -31,7 +31,7 @@ import net.minecraft.server.level.ChunkMap;
@@ -701,7 +987,30 @@ index 872a8becabc37c43d1f671bcd2f51143189f0b67..ed9f15c33eb6965d34dcd073a7ce3524
          for (Player player : getPlayersThatSee(entity)) {
              PacketHelperImpl.send(player, packet);
          }
-@@ -609,7 +621,7 @@ public class EntityHelperImpl extends EntityHelper {
+@@ -542,6 +554,22 @@ public class EntityHelperImpl extends EntityHelper {
+         ((CraftEntity) entity).getHandle().setBoundingBox(new AABB(box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX(), box.getMaxY(), box.getMaxZ()));
+     }
+ 
++    // Backport start - Newer API does not exist
++    @Override
++    public List<Player> getPlayersThatSee(Entity entity) {
++        ChunkMap tracker = ((ServerLevel) ((CraftEntity) entity).getHandle().level()).getChunkSource().chunkMap;
++        ChunkMap.TrackedEntity entityTracker = tracker.entityMap.get(entity.getEntityId());
++        ArrayList<Player> output = new ArrayList<>();
++        if (entityTracker == null) {
++            return output;
++        }
++        for (net.minecraft.server.network.ServerPlayerConnection player : entityTracker.seenBy) {
++            output.add(player.getPlayer().getBukkitEntity());
++        }
++        return output;
++    }
++    // Backport end
++
+     public static final Field EXPERIENCE_ORB_AGE = ReflectionHelper.getFields(net.minecraft.world.entity.ExperienceOrb.class).get(ReflectionMappingsInfo.ExperienceOrb_age, int.class);
+ 
+     @Override
+@@ -609,7 +637,7 @@ public class EntityHelperImpl extends EntityHelper {
              case FALL -> sources.fall();
              case FIRE -> sources.inFire();
              case FIRE_TICK -> sources.onFire();
@@ -710,7 +1019,7 @@ index 872a8becabc37c43d1f671bcd2f51143189f0b67..ed9f15c33eb6965d34dcd073a7ce3524
              case LAVA -> sources.lava();
              case DROWNING -> sources.drown();
              case BLOCK_EXPLOSION -> nmsSource instanceof PrimedTnt primedTnt ? sources.explosion(primedTnt, primedTnt.getOwner()) : sources.explosion(null);
-@@ -617,7 +629,7 @@ public class EntityHelperImpl extends EntityHelper {
+@@ -617,7 +645,7 @@ public class EntityHelperImpl extends EntityHelper {
              case VOID -> sources.fellOutOfWorld();
              case LIGHTNING -> sources.lightningBolt();
              case STARVATION -> sources.starve();
@@ -719,7 +1028,7 @@ index 872a8becabc37c43d1f671bcd2f51143189f0b67..ed9f15c33eb6965d34dcd073a7ce3524
              case MAGIC -> sources.magic();
              case WITHER -> sources.wither();
              case FALLING_BLOCK -> sources.fallingBlock(nmsSource);
-@@ -676,7 +688,7 @@ public class EntityHelperImpl extends EntityHelper {
+@@ -676,7 +704,7 @@ public class EntityHelperImpl extends EntityHelper {
      public EntityTag getMobSpawnerDisplayEntity(CreatureSpawner spawner) {
          SpawnerBlockEntity nmsSpawner = BlockHelperImpl.getTE((CraftCreatureSpawner) spawner);
          ServerLevel level = ((CraftWorld) spawner.getWorld()).getHandle();
@@ -728,7 +1037,7 @@ index 872a8becabc37c43d1f671bcd2f51143189f0b67..ed9f15c33eb6965d34dcd073a7ce3524
          return new EntityTag(nmsEntity.getBukkitEntity());
      }
  
-@@ -749,7 +761,7 @@ public class EntityHelperImpl extends EntityHelper {
+@@ -749,7 +777,7 @@ public class EntityHelperImpl extends EntityHelper {
              nmsEntity.unsetRemoved();
              nmsEntity.setUUID(id);
              if (nmsEntity instanceof ServerPlayer nmsPlayer) {
@@ -774,7 +1083,7 @@ index 4bb43e612cb080bd2e489038e3b0c675c34ca3e5..5ff004d1afb3f332676b2213b6a931b4
      }
  
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ItemHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ItemHelperImpl.java
-index 719cb8a56c7d0099ffcddfe97e6f4af57408c171..3783276621bf38d4b7e0c10b6c95e477bf2e97fd 100644
+index 719cb8a56c7d0099ffcddfe97e6f4af57408c171..1333e07ef4d41e688c4afad46e64e32cb4c1922b 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ItemHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ItemHelperImpl.java
 @@ -22,9 +22,13 @@ import com.mojang.serialization.Dynamic;
@@ -1170,7 +1479,7 @@ index 719cb8a56c7d0099ffcddfe97e6f4af57408c171..3783276621bf38d4b7e0c10b6c95e477
      }
  
      public static Class<?> PaperPotionMix_CLASS = null;
-@@ -579,7 +716,7 @@ public class ItemHelperImpl extends ItemHelper {
+@@ -579,12 +716,18 @@ public class ItemHelperImpl extends ItemHelper {
      @Override
      public Map<NamespacedKey, BrewingRecipe> getCustomBrewingRecipes() {
          if (customBrewingRecipes == null) {
@@ -1179,7 +1488,35 @@ index 719cb8a56c7d0099ffcddfe97e6f4af57408c171..3783276621bf38d4b7e0c10b6c95e477
                  if (PaperPotionMix_CLASS == null) {
                      PaperPotionMix_CLASS = paperMix.getClass();
                  }
-@@ -605,6 +742,8 @@ public class ItemHelperImpl extends ItemHelper {
++                // Backport start - Newer API does not exist
++                /*
+                 RecipeChoice ingredient = convertChoice(ReflectionHelper.getFieldValue(PaperPotionMix_CLASS, "ingredient", paperMix));
+                 RecipeChoice input = convertChoice(ReflectionHelper.getFieldValue(PaperPotionMix_CLASS, "input", paperMix));
++                */
++                RecipeChoice ingredient = CraftRecipe.toBukkit(ReflectionHelper.getFieldValue(PaperPotionMix_CLASS, "ingredient", paperMix));
++                RecipeChoice input = CraftRecipe.toBukkit(ReflectionHelper.getFieldValue(PaperPotionMix_CLASS, "input", paperMix));
++                // Backport end
+                 ItemStack result = CraftItemStack.asBukkitCopy(ReflectionHelper.getFieldValue(PaperPotionMix_CLASS, "result", paperMix));
+                 return new BrewingRecipe(input, ingredient, result);
+             });
+@@ -592,6 +735,8 @@ public class ItemHelperImpl extends ItemHelper {
+         return customBrewingRecipes;
+     }
+ 
++    // Backport start - Newer API does not exist
++    /*
+     private RecipeChoice convertChoice(Predicate<net.minecraft.world.item.ItemStack> nmsPredicate) {
+         // Not an instance of net.minecraft.world.item.crafting.Ingredient = a predicate recipe choice
+         if (nmsPredicate instanceof Ingredient ingredient) {
+@@ -599,12 +744,16 @@ public class ItemHelperImpl extends ItemHelper {
+         }
+         return PaperAPITools.instance.createPredicateRecipeChoice(item -> nmsPredicate.test(CraftItemStack.asNMSCopy(item)));
+     }
++    */
++    // Backport end
+ 
+     @Override
+     public byte[] renderMap(MapView mapView, Player player) {
          return ((CraftMapView) mapView).render((CraftPlayer) player).buffer;
      }
  
@@ -1188,7 +1525,7 @@ index 719cb8a56c7d0099ffcddfe97e6f4af57408c171..3783276621bf38d4b7e0c10b6c95e477
      @Override
      public int getFoodPoints(Material itemType) {
          return CraftMagicNumbers.getItem(itemType).components().get(DataComponents.FOOD).nutrition();
-@@ -627,4 +766,6 @@ public class ItemHelperImpl extends ItemHelper {
+@@ -627,4 +776,6 @@ public class ItemHelperImpl extends ItemHelper {
          }
          return CraftItemStack.asBukkitCopy(nmsItemStack);
      }
