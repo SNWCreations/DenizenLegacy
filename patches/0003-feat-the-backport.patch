@@ -6,7 +6,7 @@ Subject: [PATCH] feat: the backport
 
 
 diff --git a/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java b/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java
-index f47fd55f95fdcef95429c67115e8c9d51eaf83a9..bbe4ab979bf6fd59e06b0de26805df402ffebf0b 100644
+index f47fd55f95fdcef95429c67115e8c9d51eaf83a9..7b77ed9acf265fdbbaff39cb0480bc5c08e86091 100644
 --- a/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java
 +++ b/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java
 @@ -75,9 +75,13 @@ public class PaperModule {
@@ -28,7 +28,7 @@ similarity index 100%
 rename from paper/src/main/java/com/denizenscript/denizen/paper/events/PlayerShieldDisableScriptEvent.java
 rename to paper/src/main/java/com/denizenscript/denizen/paper/events/PlayerShieldDisableScriptEvent.java.ignored
 diff --git a/paper/src/main/java/com/denizenscript/denizen/paper/utilities/PaperAPIToolsImpl.java b/paper/src/main/java/com/denizenscript/denizen/paper/utilities/PaperAPIToolsImpl.java
-index bccb44dc8abd86176b34652ade6394535c55455c..670609eeccd83eba0fc0b4057cddbcdc8f2648ec 100644
+index bccb44dc8abd86176b34652ade6394535c55455c..4399bcb8f62c71d4bac591cbee4393201ecc7056 100644
 --- a/paper/src/main/java/com/denizenscript/denizen/paper/utilities/PaperAPIToolsImpl.java
 +++ b/paper/src/main/java/com/denizenscript/denizen/paper/utilities/PaperAPIToolsImpl.java
 @@ -199,10 +199,14 @@ public class PaperAPIToolsImpl extends PaperAPITools {
@@ -75,7 +75,7 @@ index bccb44dc8abd86176b34652ade6394535c55455c..670609eeccd83eba0fc0b4057cddbcdc
 +    // Backport end
  }
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/BlockHelper.java b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/BlockHelper.java
-index 5d4ca461603babc0fef738ff68fbb584552dc28a..6fa7b6356d70a302a2ac420161d07b6cd1ddea86 100644
+index 5d4ca461603babc0fef738ff68fbb584552dc28a..f5e69a7cb3f185d9fabaec718e306ecd79b7b054 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/BlockHelper.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/BlockHelper.java
 @@ -88,9 +88,14 @@ public interface BlockHelper {
@@ -94,10 +94,10 @@ index 5d4ca461603babc0fef738ff68fbb584552dc28a..6fa7b6356d70a302a2ac420161d07b6c
      default void setVanillaTags(Material material, Set<String> tags) {
          throw new UnsupportedOperationException();
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
-index a39d9b8813b266d998fb49151101980b0f9f1616..bfed055042154c7290911037d76888b522ee632d 100644
+index be2bc3b6060a2a5aa1ce50c061605722764a9b35..566eee04f04e3427c259f163974fdbb317a4f536 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
-@@ -381,9 +381,14 @@ public abstract class EntityHelper {
+@@ -382,9 +382,14 @@ public abstract class EntityHelper {
  
      public abstract void setBoundingBox(Entity entity, BoundingBox box);
  
@@ -112,7 +112,7 @@ index a39d9b8813b266d998fb49151101980b0f9f1616..bfed055042154c7290911037d76888b5
  
      public void sendAllUpdatePackets(Entity entity) {
          throw new UnsupportedOperationException();
-@@ -480,7 +485,7 @@ public abstract class EntityHelper {
+@@ -483,7 +488,7 @@ public abstract class EntityHelper {
  
      public static class EntityEntersVehicleScriptEventImpl extends EntityEntersVehicleScriptEvent {
          @EventHandler
@@ -121,7 +121,7 @@ index a39d9b8813b266d998fb49151101980b0f9f1616..bfed055042154c7290911037d76888b5
              fire(event, event.getMount());
          }
      }
-@@ -491,7 +496,7 @@ public abstract class EntityHelper {
+@@ -494,7 +499,7 @@ public abstract class EntityHelper {
  
      public static class EntityExitsVehicleScriptEventImpl extends EntityExitsVehicleScriptEvent {
          @EventHandler
@@ -131,7 +131,7 @@ index a39d9b8813b266d998fb49151101980b0f9f1616..bfed055042154c7290911037d76888b5
          }
      }
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java
-index dbcb0e6043adc2d889efa70bf4df2449003aac2b..d2baca2863544363ab59417aa408ba63cf2716a9 100644
+index 529ea7aa35541b9c8af9f1b2ddbced68200e3f4a..f3ccbf92e46b78066a9e364affadfad0ac0bd663 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java
 @@ -168,9 +168,13 @@ public class PropertyRegistry {
@@ -149,7 +149,7 @@ index dbcb0e6043adc2d889efa70bf4df2449003aac2b..d2baca2863544363ab59417aa408ba63
              PropertyParser.registerProperty(EntityText.class, EntityTag.class);
              PropertyParser.registerProperty(EntityTextShadowed.class, EntityTag.class);
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
-index f72fe102762f26abbbc91bf2efe2194b043f0d33..7cc5f39b42def37842adc9b5bd8aba7607e84ebc 100644
+index f72fe102762f26abbbc91bf2efe2194b043f0d33..25c87aacc41943b449197c3b5dea1945832dadec 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
 @@ -150,10 +150,18 @@ public class EntityColor extends EntityProperty<ElementTag> {
@@ -176,7 +176,7 @@ similarity index 100%
 rename from plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java
 rename to plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java.ignored
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java
-index 93bbed2f038006f3d82cb8eb3e65a989664a1510..66cff274d292ddbb9bbfd5b0a9375786cc0cc775 100644
+index 93bbed2f038006f3d82cb8eb3e65a989664a1510..e8053fb0574196384b4c06e132867c54b167e430 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java
 @@ -49,9 +49,14 @@ public class ItemPotion extends ItemProperty<ObjectTag> {
@@ -214,7 +214,7 @@ index 93bbed2f038006f3d82cb8eb3e65a989664a1510..66cff274d292ddbb9bbfd5b0a9375786
                      applyLegacyMapBasePotionData(baseEffect, potionMeta, mechanism);
                  }
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/BukkitCommandRegistry.java b/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/BukkitCommandRegistry.java
-index 3be94dbab9815f5dbf0684cb145820dffbc24d5f..ff930c64c45ab0240f259eec79a8bfaa792bc7d7 100644
+index 3be94dbab9815f5dbf0684cb145820dffbc24d5f..4a54e3599da27777aa8f3ca9c81093458bdf90e5 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/BukkitCommandRegistry.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/scripts/commands/BukkitCommandRegistry.java
 @@ -175,9 +175,13 @@ public class BukkitCommandRegistry {
@@ -236,7 +236,7 @@ similarity index 100%
 rename from plugin/src/main/java/com/denizenscript/denizen/scripts/commands/world/TickCommand.java
 rename to plugin/src/main/java/com/denizenscript/denizen/scripts/commands/world/TickCommand.java.ignored
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/tags/core/ServerTagBase.java b/plugin/src/main/java/com/denizenscript/denizen/tags/core/ServerTagBase.java
-index a379d8e1f41f2ffb9178531a09f20a90fe610ed0..baae689b9282f533355af607ba8ece55ac2acad9 100644
+index a379d8e1f41f2ffb9178531a09f20a90fe610ed0..8b2d973e97618cf34245f3d37e0c6c879e4d8724 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/tags/core/ServerTagBase.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/tags/core/ServerTagBase.java
 @@ -913,15 +913,20 @@ public class ServerTagBase extends PseudoObjectTagBase<ServerTagBase> {
@@ -261,7 +261,7 @@ index a379d8e1f41f2ffb9178531a09f20a90fe610ed0..baae689b9282f533355af607ba8ece55
          // <--[tag]
          // @attribute <server.world_types>
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java b/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
-index 4fbfa0966b6a8b6dc3213dd9f52e94643e64a2d5..791f34de52822c24e1028c9cfd0ea3090db0548d 100644
+index 4fbfa0966b6a8b6dc3213dd9f52e94643e64a2d5..187cbb465af511ffa417322b45e0ab1df6734d6c 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
 @@ -27,7 +27,10 @@ public class MapCursor extends MapObject {
@@ -277,7 +277,7 @@ index 4fbfa0966b6a8b6dc3213dd9f52e94643e64a2d5..791f34de52822c24e1028c9cfd0ea309
  
      private byte yawToDirection(double yaw) {
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
-index ea0f18a6764ff5e6d767894baf69c5f2a44b19b5..55e2474da691cfbccaf0a720418200f4765287e8 100644
+index 820b41713b7db3a9ead8a53c7ee80da20fbee108..1be08b84009c9f4c77e1a2f304f85b77f47b1ec2 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
 @@ -33,7 +33,7 @@ import com.denizenscript.denizencore.utilities.debugging.Debug;
@@ -345,7 +345,7 @@ index ea0f18a6764ff5e6d767894baf69c5f2a44b19b5..55e2474da691cfbccaf0a720418200f4
              }
              catch (Throwable ex) {
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/ReflectionMappingsInfo.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/ReflectionMappingsInfo.java
-index 397b0f80cecc4b65be6f107ac277a20eb9542b74..77811771f7b7fba5142063cb510ec398d2220165 100644
+index 397b0f80cecc4b65be6f107ac277a20eb9542b74..e5b58eee35cde6a7dade8a3799721b66de89f696 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/ReflectionMappingsInfo.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/ReflectionMappingsInfo.java
 @@ -4,6 +4,8 @@ public class ReflectionMappingsInfo {
@@ -500,7 +500,7 @@ index 397b0f80cecc4b65be6f107ac277a20eb9542b74..77811771f7b7fba5142063cb510ec398
 +    // Backport end
  }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/AdvancementHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/AdvancementHelperImpl.java
-index 2a885152ecb84743068e19f87440b11e445f7514..9e8705018974b742dcb6f1af5218b238b1c48a6d 100644
+index 638a146a873630c8c091921e2a93cf9f0721cce1..f19f6850b10c05c0fb2dc8bafd7fd50969cf79fb 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/AdvancementHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/AdvancementHelperImpl.java
 @@ -21,21 +21,36 @@ import org.bukkit.entity.Player;
@@ -721,7 +721,7 @@ index 2a885152ecb84743068e19f87440b11e445f7514..9e8705018974b742dcb6f1af5218b238
 +    // Backport end
  }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/BlockHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/BlockHelperImpl.java
-index 3f109be610bc0d4c99c7bb62d7c1d69d5e4ad591..1a2d5b0b5a74114d91512efcc0ee17de62c44547 100644
+index 0d618fa8f50a60f4b32fb62c8dcaaaad5db30739..76b299c5c65c460a52203e739249f246c7033f2c 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/BlockHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/BlockHelperImpl.java
 @@ -18,7 +18,7 @@ import net.minecraft.core.BlockPos;
@@ -830,7 +830,7 @@ index 3f109be610bc0d4c99c7bb62d7c1d69d5e4ad591..1a2d5b0b5a74114d91512efcc0ee17de
          }
          catch (Throwable ex) {
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ChunkHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ChunkHelperImpl.java
-index 5607ed31f3677b3e01043f73a9638bf3ed4b6ffd..8ef705dddc0aaaede2b293304ab3d90bebdbeeec 100644
+index e9dedf8d7215f5d850760fe7280577ff05652ec0..f1386b5f94b19a9e226e7c84c3bfaab7bff29b9f 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ChunkHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ChunkHelperImpl.java
 @@ -16,7 +16,7 @@ import net.minecraft.world.level.biome.Biome;
@@ -843,7 +843,7 @@ index 5607ed31f3677b3e01043f73a9638bf3ed4b6ffd..8ef705dddc0aaaede2b293304ab3d90b
  import org.bukkit.World;
  import org.bukkit.Chunk;
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/CustomEntityHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/CustomEntityHelperImpl.java
-index d6376261281487b4f94b4a9fec71175e6fed10d9..c63eccdbdec4e325441eacd110eaf5ca3a22af1d 100644
+index 0c1aa4a9d65e37fe459e90f18deabf673b7a9abb..9d165d5872f9cb7500a063610153326c5fc648de 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/CustomEntityHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/CustomEntityHelperImpl.java
 @@ -15,7 +15,7 @@ import com.denizenscript.denizen.utilities.BukkitImplDeprecations;
@@ -865,7 +865,7 @@ index d6376261281487b4f94b4a9fec71175e6fed10d9..c63eccdbdec4e325441eacd110eaf5ca
          fakePlayer.forceSetPositionRotation(location.getX(), location.getY(), location.getZ(),
                  location.getYaw(), location.getPitch());
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
-index 234f235a9d1b37a977c24ace5d23ee82b27876ac..4fda597729b3bfaf1fbdee4fe3ed9c2c695566f3 100644
+index 51d9b61a70533acb7c4185bb198a2d10d5d4f7e9..cd71f0bc530ec33bfdf33e0cc3a1261bd10a9428 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
 @@ -26,7 +26,7 @@ import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
@@ -930,7 +930,7 @@ index 234f235a9d1b37a977c24ace5d23ee82b27876ac..4fda597729b3bfaf1fbdee4fe3ed9c2c
                  BuiltInRegistries.ENCHANTMENT.freeze();
              }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
-index 872a8becabc37c43d1f671bcd2f51143189f0b67..e2c6578dd6c3d2dc23a83258050173dd7dc68ea1 100644
+index 0b7762b5d7f3017894779b7084703f079e5a8a7f..cc7ca972fa16b6966c830ac267df142dba3571f8 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
 @@ -31,7 +31,7 @@ import net.minecraft.server.level.ChunkMap;
@@ -1059,7 +1059,7 @@ index 872a8becabc37c43d1f671bcd2f51143189f0b67..e2c6578dd6c3d2dc23a83258050173dd
              else {
                  level.addFreshEntity(nmsEntity);
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
-index 4bb43e612cb080bd2e489038e3b0c675c34ca3e5..5ff004d1afb3f332676b2213b6a931b4e6898be1 100644
+index 0727d350a72129f5480601e896541430b0239ac3..4bd4411f4e95c89d069488563485d2bcce70ec00 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
 @@ -43,7 +43,7 @@ public class FishingHelperImpl implements FishingHelper {
@@ -1095,7 +1095,7 @@ index 4bb43e612cb080bd2e489038e3b0c675c34ca3e5..5ff004d1afb3f332676b2213b6a931b4
      }
  
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ItemHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ItemHelperImpl.java
-index 719cb8a56c7d0099ffcddfe97e6f4af57408c171..1333e07ef4d41e688c4afad46e64e32cb4c1922b 100644
+index 1addc943aeccba536e33cefeee59fb97b487b4c1..0e0ca18ab286585a203ea10424faa65e2e7cbe81 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ItemHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/ItemHelperImpl.java
 @@ -22,9 +22,13 @@ import com.mojang.serialization.Dynamic;
@@ -1545,7 +1545,7 @@ index 719cb8a56c7d0099ffcddfe97e6f4af57408c171..1333e07ef4d41e688c4afad46e64e32c
 +    // Backport end
  }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/PacketHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/PacketHelperImpl.java
-index 0835a548eb38af0df9ee02e3b721a270cb97dedd..826faf7d471909bd5f4e2402359e4a673da39052 100644
+index 213617f74b9eb0e45f64e643f5cce0c8dbc652d7..0de227eb9e4a4ebd15791e70f66d41705cc4bde1 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/PacketHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/PacketHelperImpl.java
 @@ -18,10 +18,14 @@ import net.md_5.bungee.api.ChatColor;
@@ -1620,7 +1620,7 @@ index 0835a548eb38af0df9ee02e3b721a270cb97dedd..826faf7d471909bd5f4e2402359e4a67
      }
  }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/PlayerHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/PlayerHelperImpl.java
-index 3b91226a2b5c690aa576b3443f42210e9e5fcd34..443da9fafa8d42751165de8e5f93b547e2fb91c6 100644
+index 41f08364d0d03da1e7fe2c5c5171c8d05a91efe5..278391efab4a48fb5d3f7c639c408fb4c519a751 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/PlayerHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/PlayerHelperImpl.java
 @@ -30,7 +30,7 @@ import net.md_5.bungee.api.ChatColor;
@@ -1691,7 +1691,7 @@ index 3b91226a2b5c690aa576b3443f42210e9e5fcd34..443da9fafa8d42751165de8e5f93b547
          if (nmsPlayer.isPassenger()) {
             nmsPlayer.connection.send(new ClientboundSetPassengersPacket(nmsPlayer.getVehicle()));
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/BiomeNMSImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/BiomeNMSImpl.java
-index 12924fe6e974e83277c93f43b4fe42ad36f78d30..92ecaa28cd7fdabce43deb8369d52b8394c29094 100644
+index 6400c6038c97dbb2274491ae52f7476f81aea4aa..998c3d64813fc7dc98eadf15500faafbd08655c0 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/BiomeNMSImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/BiomeNMSImpl.java
 @@ -20,7 +20,7 @@ import org.bukkit.Location;
@@ -1726,7 +1726,7 @@ index 12924fe6e974e83277c93f43b4fe42ad36f78d30..92ecaa28cd7fdabce43deb8369d52b83
          return entityTypes;
      }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/ImprovedOfflinePlayerImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/ImprovedOfflinePlayerImpl.java
-index b66a1a55e7c4adbe6f3573b7b31951d66c960609..56587643d07f3febaf596baa92aa2bf691cde551 100644
+index 5b772caf224f7d7fdc87a764fde4ad347ab95144..15beb15fed81d013ce1e3de1ea3b9cc85d9c82d2 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/ImprovedOfflinePlayerImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/ImprovedOfflinePlayerImpl.java
 @@ -78,7 +78,7 @@ public class ImprovedOfflinePlayerImpl extends ImprovedOfflinePlayer {
@@ -1766,7 +1766,7 @@ index b66a1a55e7c4adbe6f3573b7b31951d66c960609..56587643d07f3febaf596baa92aa2bf6
                  }
              }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/SidebarImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/SidebarImpl.java
-index ed33d38f76888ada5795016e1c3fa6f9c0d0ee72..2d0815bc7269b07eba8fa689983e97992b8c1cab 100644
+index ed33d38f76888ada5795016e1c3fa6f9c0d0ee72..1e3e3cd11de5c5b74d42c4b2e6625a34654578aa 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/SidebarImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/SidebarImpl.java
 @@ -8,12 +8,13 @@ import com.denizenscript.denizencore.utilities.debugging.Debug;
@@ -1814,7 +1814,7 @@ index ed33d38f76888ada5795016e1c3fa6f9c0d0ee72..2d0815bc7269b07eba8fa689983e9799
          Objective temp = this.obj2;
          this.obj2 = this.obj1;
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/blocks/BlockLightImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/blocks/BlockLightImpl.java
-index f3f5dcea7ec79512a6593f625b693d9408e36049..61ddfdb686ae0dc5bdc3744c6a8a6cb5d6803ede 100644
+index 5307e9fc47a217ca80043e330cf0b0c163ecbb9c..ebecb2328602a1b37570a915adcd7b4305e1366a 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/blocks/BlockLightImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/blocks/BlockLightImpl.java
 @@ -16,7 +16,7 @@ import net.minecraft.world.level.LightLayer;
@@ -1827,7 +1827,7 @@ index f3f5dcea7ec79512a6593f625b693d9408e36049..61ddfdb686ae0dc5bdc3744c6a8a6cb5
  import net.minecraft.world.level.lighting.LevelLightEngine;
  import org.bukkit.Bukkit;
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
-index c025960ec41d3dc44ff770389161a6ce101e066f..d53d5fbec27268257a29dc46c0b164e187ea3b8f 100644
+index f6570aea104fdd1be2c66a57bcf2a00f83543fae..d320ccfa304be2fd38f6950f97fd5a63286b3bba 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
 @@ -3,10 +3,13 @@ package com.denizenscript.denizen.nms.v1_20.impl.entities;
@@ -1847,7 +1847,7 @@ index c025960ec41d3dc44ff770389161a6ce101e066f..d53d5fbec27268257a29dc46c0b164e1
      public CraftFakeArrowImpl(CraftServer craftServer, AbstractArrow entityArrow) {
          super(craftServer, entityArrow);
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftItemProjectileImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftItemProjectileImpl.java
-index 13627a8caaae58d5f6448c4a34d755977db8e685..075ce8544b669884a0c041dc793c5a896ad417f3 100644
+index 2b3f458091ad9d4d1470a4c72f08058c272483ee..32900071e7359e2a0a4b1a79347710e5659aee99 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftItemProjectileImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftItemProjectileImpl.java
 @@ -22,7 +22,7 @@ public class CraftItemProjectileImpl extends CraftEntity implements ItemProjecti
@@ -1860,7 +1860,7 @@ index 13627a8caaae58d5f6448c4a34d755977db8e685..075ce8544b669884a0c041dc793c5a89
              catch (Throwable ex) {
                  Debug.echoError(ex);
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/EntityFakePlayerImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/EntityFakePlayerImpl.java
-index 579022f45e93ca6d18f43a7adcc1d65f8769b6f4..0d0b8e8a348e0ba4ed02ed0356a3e3bf39d938b0 100644
+index c997629686a5f3565f1613852482211c7e7805a2..ea939d644cce6e1d80e4a4bdc6e279db97af48d9 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/EntityFakePlayerImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/EntityFakePlayerImpl.java
 @@ -9,10 +9,10 @@ import com.denizenscript.denizencore.utilities.debugging.Debug;
@@ -1900,7 +1900,7 @@ index 579022f45e93ca6d18f43a7adcc1d65f8769b6f4..0d0b8e8a348e0ba4ed02ed0356a3e3bf
          catch (Exception ex) {
              Debug.echoError(ex);
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/EntityItemProjectileImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/EntityItemProjectileImpl.java
-index 71eb1bff41b5151119132ae9c4f18a93e1689350..8b9a45e398f211224c24b89ff649752fddfd2d09 100644
+index dccb5fabd0501de45520ef2ca824e89fae31f981..30787fdfa71a0220f4f6959059085e6784c2eccd 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/EntityItemProjectileImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/EntityItemProjectileImpl.java
 @@ -48,10 +48,17 @@ public class EntityItemProjectileImpl extends ThrowableProjectile {
@@ -1943,7 +1943,7 @@ index 71eb1bff41b5151119132ae9c4f18a93e1689350..8b9a45e398f211224c24b89ff649752f
              this.remove(RemovalReason.KILLED);
          }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/fakes/FakePlayerConnectionImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/fakes/FakePlayerConnectionImpl.java
-index dcc1321deed9b4b9c6a27e5bd8382e5c0653f92c..5d1179218c956e1e6b7a8921277ecb6dda8c86b4 100644
+index dcc1321deed9b4b9c6a27e5bd8382e5c0653f92c..e297f52d3867d410b8806a2fa8df7e53ce696173 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/fakes/FakePlayerConnectionImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/fakes/FakePlayerConnectionImpl.java
 @@ -4,13 +4,15 @@ import net.minecraft.network.Connection;
@@ -1966,7 +1966,7 @@ index dcc1321deed9b4b9c6a27e5bd8382e5c0653f92c..5d1179218c956e1e6b7a8921277ecb6d
  
      @Override
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/AbstractListenerPlayInImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/AbstractListenerPlayInImpl.java
-index ea93be5c60d3c6a70c608fad8fb157087755035b..d8b4e998b7c075d276fa382de2dae024dfed64a4 100644
+index 78b3be04f0ba9be4bdcfea065f57405f5371fee8..ec0ae8c87ed310559d1fa872d9cf0d07a0f59320 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/AbstractListenerPlayInImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/AbstractListenerPlayInImpl.java
 @@ -13,11 +13,11 @@ import net.minecraft.network.chat.Component;
@@ -2111,7 +2111,7 @@ index ea93be5c60d3c6a70c608fad8fb157087755035b..d8b4e998b7c075d276fa382de2dae024
 +    // Backport end
  }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/DenizenNetworkManagerImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/DenizenNetworkManagerImpl.java
-index 5e31071200df7fac2e36d6d6293c217e86d4f0ae..839efaa9259b50f9e95972c8414eae476d9a0a43 100644
+index 50563b391b13bb614a67e0dd748a57d5face6b64..0675bee5a68683c13740ad9aed5026bbae86ce5e 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/DenizenNetworkManagerImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/DenizenNetworkManagerImpl.java
 @@ -15,17 +15,17 @@ import io.netty.channel.ChannelHandlerContext;
@@ -2342,7 +2342,7 @@ index 5e31071200df7fac2e36d6d6293c217e86d4f0ae..839efaa9259b50f9e95972c8414eae47
      private static PacketFlow getProtocolDirection(Connection networkManager) {
          PacketFlow direction = null;
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/DenizenPacketListenerImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/DenizenPacketListenerImpl.java
-index 93edc27afb57ac13b7116d3be74509435c2cd56f..5f021b677d408b0b20803718821ce6eddf22d0e3 100644
+index 229f0ff3f4f172d1353276f3055d7fe020cdeb6c..0d371b1a4bd564de3c331e6167cc0c7b92d4e90a 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/DenizenPacketListenerImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/DenizenPacketListenerImpl.java
 @@ -12,11 +12,15 @@ import com.denizenscript.denizen.utilities.packets.DenizenPacketHandler;
@@ -2381,7 +2381,7 @@ index 93edc27afb57ac13b7116d3be74509435c2cd56f..5f021b677d408b0b20803718821ce6ed
          super.handleCustomPayload(packet);
      }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/FakeBlockHelper.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/FakeBlockHelper.java
-index 6b64d7fdb1a7348b2dbccd0f4fd7d8654141a5b1..f605b1015467b6990bd0256fead21f3986dea4c6 100644
+index 1cb5f2a3ba0a362193e499e9957fbb77e69989f8..087b29099244b4bfaf9b58f606585b4fad82466d 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/FakeBlockHelper.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/handlers/FakeBlockHelper.java
 @@ -11,7 +11,7 @@ import net.minecraft.core.Registry;
@@ -2532,7 +2532,7 @@ index 41695a47a6ca114bfdc5b88b579a3e4d6a16ab05..a4197261758ba9666e8fb673c85a22ad
                  String modeText = update.gameMode() == null ? null : update.gameMode().name();
                  PlayerReceivesTablistUpdateScriptEvent.TabPacketData data = new PlayerReceivesTablistUpdateScriptEvent.TabPacketData(mode, profile.getId(), update.listed(), profile.getName(),
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketInResourcePackStatusImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketInResourcePackStatusImpl.java
-index 1cfdc67205b670ea2af88256893744fdb83dcd60..07ba183c287906da3227f13d5bba8cfb881235dc 100644
+index 1cfdc67205b670ea2af88256893744fdb83dcd60..83345caa51190f8954c0616e10c52fc88435c692 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketInResourcePackStatusImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketInResourcePackStatusImpl.java
 @@ -1,7 +1,7 @@
@@ -2553,7 +2553,7 @@ index 1cfdc67205b670ea2af88256893744fdb83dcd60..07ba183c287906da3227f13d5bba8cfb
      }
  }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
-index e3e1b868a2e18b3f69ccdc8c6755bdf27d3a3b09..1c6ad9e0845dcda2fffe4f076a51deb49d325da5 100644
+index e4dd9c036fd33d36bba57e150e70d0d54e3396da..01467a1321b237d1b59e348e4882d02eeac36f7d 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
 @@ -24,7 +24,10 @@ public class PacketOutChatImpl extends PacketOutChat {
