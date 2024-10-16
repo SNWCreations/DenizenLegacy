@@ -94,7 +94,7 @@ index 5d4ca461603babc0fef738ff68fbb584552dc28a..f5e69a7cb3f185d9fabaec718e306ecd
      default void setVanillaTags(Material material, Set<String> tags) {
          throw new UnsupportedOperationException();
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
-index be2bc3b6060a2a5aa1ce50c061605722764a9b35..566eee04f04e3427c259f163974fdbb317a4f536 100644
+index be2bc3b6060a2a5aa1ce50c061605722764a9b35..bce4a4acfabd4088902acda605a45888ac3b77bc 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
 @@ -382,9 +382,14 @@ public abstract class EntityHelper {
@@ -112,7 +112,30 @@ index be2bc3b6060a2a5aa1ce50c061605722764a9b35..566eee04f04e3427c259f163974fdbb3
  
      public void sendAllUpdatePackets(Entity entity) {
          throw new UnsupportedOperationException();
-@@ -483,7 +488,7 @@ public abstract class EntityHelper {
+@@ -446,13 +451,21 @@ public abstract class EntityHelper {
+     }
+ 
+     public float getStepHeight(Entity entity) {
+-        return entity instanceof LivingEntity livingEntity ? (float) livingEntity.getAttribute(Attribute.GENERIC_STEP_HEIGHT).getBaseValue() : 0;
++        // Backport start - Step height attribute does not exist in MC 1.20.1
++//        return entity instanceof LivingEntity livingEntity ? (float) livingEntity.getAttribute(Attribute.GENERIC_STEP_HEIGHT).getBaseValue() : 0;
++        throw new UnsupportedOperationException();
++        // Backport end
+     }
+ 
+     public void setStepHeight(Entity entity, float stepHeight) {
++        // Backport start - Step height attribute does not exist in MC 1.20.1
++        /*
+         if (entity instanceof LivingEntity livingEntity) {
+             livingEntity.getAttribute(Attribute.GENERIC_STEP_HEIGHT).setBaseValue(stepHeight);
+         }
++        */
++        throw new UnsupportedOperationException();
++        // Backport end
+     }
+ 
+     public List<Object> convertInternalEntityDataValues(Entity entity, MapTag internalData) {
+@@ -483,7 +496,7 @@ public abstract class EntityHelper {
  
      public static class EntityEntersVehicleScriptEventImpl extends EntityEntersVehicleScriptEvent {
          @EventHandler
@@ -121,7 +144,7 @@ index be2bc3b6060a2a5aa1ce50c061605722764a9b35..566eee04f04e3427c259f163974fdbb3
              fire(event, event.getMount());
          }
      }
-@@ -494,7 +499,7 @@ public abstract class EntityHelper {
+@@ -494,7 +507,7 @@ public abstract class EntityHelper {
  
      public static class EntityExitsVehicleScriptEventImpl extends EntityExitsVehicleScriptEvent {
          @EventHandler
