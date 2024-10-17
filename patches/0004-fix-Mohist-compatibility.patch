@@ -1,0 +1,261 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?ZX=E5=A4=8F=E5=A4=9C=E4=B9=8B=E9=A3=8E?=
+ <snwcreations@qq.com>
+Date: Thu, 17 Oct 2024 20:51:18 +0800
+Subject: [PATCH] fix: Mohist compatibility
+
+This commit is made to make the plugin be compatible with Mohist the server software.
+
+diff --git a/dist/pom.xml b/dist/pom.xml
+index d8474d52e1bcadcac75e49e58707f0126c861d6d..8b7081691799d437a49880f2617952a0848ea34c 100644
+--- a/dist/pom.xml
++++ b/dist/pom.xml
+@@ -181,7 +181,7 @@
+                 <artifactId>maven-jar-plugin</artifactId>
+                 <version>3.3.0</version>
+                 <configuration>
+-                    <finalName>Denizen-${DENIZEN_VERSION}-b${BUILD_NUMBER}-${BUILD_CLASS}</finalName>
++                    <finalName>Denizen-${DENIZEN_VERSION}-b${BUILD_NUMBER}-${BUILD_CLASS}-Mohist</finalName> <!-- Mohist Compatibility - The built plugin is only for Mohist -->
+                     <outputDirectory>../target</outputDirectory>
+                     <archive>
+                         <manifest>
+diff --git a/v1_20/pom.xml b/v1_20/pom.xml
+index e3e74853ef94f989d41870b7704147adc87535f1..3c1d1212d3fc0384fb60812a02d9d41261a8e6a1 100644
+--- a/v1_20/pom.xml
++++ b/v1_20/pom.xml
+@@ -8,6 +8,15 @@
+     <artifactId>denizen-v1_20</artifactId>
+     <version>1.3.1-SNAPSHOT</version>
+ 
++    <!-- Mohist Compatibility start - Add Mohist to dependencies, so we can look at NMS things using SRG mapping -->
++    <repositories>
++        <repository>
++            <id>mohistmc</id>
++            <url>https://maven.mohistmc.com/</url>
++        </repository>
++    </repositories>
++    <!-- Mohist Compatibility end -->
++
+     <dependencies>
+         <dependency>
+             <groupId>com.denizenscript</groupId>
+@@ -16,19 +25,28 @@
+             <scope>compile</scope>
+             <optional>true</optional>
+         </dependency>
++        <!-- Mohist Compatibility start - Add Mohist to dependencies so we can look at NMS things using SRG mapping
+         <dependency>
+             <groupId>org.spigotmc</groupId>
+             <artifactId>spigot-api</artifactId>
+-            <version>1.20.1-R0.1-SNAPSHOT</version> <!-- Backport - Use 1.20.1 for this module -->
++            <version>1.20.1-R0.1-SNAPSHOT</version>
+             <scope>provided</scope>
+         </dependency>
++        -->
+         <dependency>
+             <groupId>org.spigotmc</groupId>
+             <artifactId>spigot</artifactId>
+-            <version>1.20.1-R0.1-SNAPSHOT</version> <!-- Backport - Use 1.20.1 for this module -->
++            <version>1.20.1-R0.1-SNAPSHOT</version>
+             <classifier>remapped-mojang</classifier>
+             <scope>provided</scope>
+         </dependency>
++        <dependency>
++            <groupId>com.mohistmc</groupId>
++            <artifactId>mohistdev</artifactId>
++            <version>1.20.1</version>
++            <scope>provided</scope>
++        </dependency>
++        <!-- Mohist Compatibility end -->
+     </dependencies>
+ 
+     <build>
+diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
+index cc7ca972fa16b6966c830ac267df142dba3571f8..3370af8a25ce6e310665f8440db45dee831d43e2 100644
+--- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
++++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
+@@ -31,7 +31,7 @@ import net.minecraft.server.level.ChunkMap;
+ import net.minecraft.server.level.ServerEntity;
+ import net.minecraft.server.level.ServerLevel;
+ import net.minecraft.server.level.ServerPlayer;
+-//import net.minecraft.server.network.CommonListenerCookie; // Backport - Cookie does noe exist in MC 1.20.1
++//import net.minecraft.server.network.CommonListenerCookie; // Backport - Cookie does noe exist in MC 1.20.1
+ import net.minecraft.server.players.PlayerList;
+ import net.minecraft.util.Mth;
+ import net.minecraft.world.InteractionHand;
+@@ -65,14 +65,14 @@ import org.bukkit.attribute.Attribute;
+ import org.bukkit.attribute.AttributeInstance;
+ import org.bukkit.block.CreatureSpawner;
+ import org.bukkit.block.data.BlockData;
+-import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
+-import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+-import org.bukkit.craftbukkit.v1_20_R1.block.CraftBlock;
+-import org.bukkit.craftbukkit.v1_20_R1.block.CraftCreatureSpawner;
+-import org.bukkit.craftbukkit.v1_20_R1.block.data.CraftBlockData;
+-import org.bukkit.craftbukkit.v1_20_R1.entity.*;
+-import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
+-import org.bukkit.craftbukkit.v1_20_R1.util.CraftLocation;
++import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
++import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
++import org.bukkit.craftbukkit.v1_20_R1.block.CraftBlock;
++import org.bukkit.craftbukkit.v1_20_R1.block.CraftCreatureSpawner;
++import org.bukkit.craftbukkit.v1_20_R1.block.data.CraftBlockData;
++import org.bukkit.craftbukkit.v1_20_R1.entity.*;
++import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
++import org.bukkit.craftbukkit.v1_20_R1.util.CraftLocation;
+ import org.bukkit.entity.*;
+ import org.bukkit.event.entity.EntityDamageEvent;
+ import org.bukkit.inventory.EquipmentSlot;
+@@ -115,16 +115,16 @@ public class EntityHelperImpl extends EntityHelper {
+             damage = attrib.getValue();
+         }
+         if (attacker.getEquipment() != null) {
+-            // Backport start - Rewrite damage bonus logic
+-            net.minecraft.world.entity.MobType monsterType;
+-            if (target instanceof LivingEntity) {
+-                monsterType = ((CraftLivingEntity) target).getHandle().getMobType();
+-            }
+-            else {
+-                monsterType = net.minecraft.world.entity.MobType.UNDEFINED;
+-            }
+-            damage += EnchantmentHelper.getDamageBonus(CraftItemStack.asNMSCopy(attacker.getEquipment().getItemInMainHand()), /*CraftEntityType.bukkitToMinecraft(target.getType())*/monsterType);
+-            // Backport end
++            // Backport start - Rewrite damage bonus logic
++            net.minecraft.world.entity.MobType monsterType;
++            if (target instanceof LivingEntity) {
++                monsterType = ((CraftLivingEntity) target).getHandle().getMobType();
++            }
++            else {
++                monsterType = net.minecraft.world.entity.MobType.UNDEFINED;
++            }
++            damage += EnchantmentHelper.getDamageBonus(CraftItemStack.asNMSCopy(attacker.getEquipment().getItemInMainHand()), /*CraftEntityType.bukkitToMinecraft(target.getType())*/monsterType);
++            // Backport end
+         }
+         if (damage <= 0) {
+             return 0;
+@@ -144,7 +144,7 @@ public class EntityHelperImpl extends EntityHelper {
+             if (!(nmsTarget instanceof net.minecraft.world.entity.LivingEntity livingTarget)) {
+                 return damage;
+             }
+-            damage = CombatRules.getDamageAfterAbsorb((float) damage, /*source,*/ (float) livingTarget.getArmorValue(), (float) livingTarget.getAttributeValue(Attributes.ARMOR_TOUGHNESS)); // Backport - Different arguments in different MC version
++            damage = CombatRules.getDamageAfterAbsorb((float) damage, /*source,*/ (float) livingTarget.getArmorValue(), (float) livingTarget.getAttributeValue(Attributes.ARMOR_TOUGHNESS)); // Backport - Different arguments in different MC version
+             int enchantDamageModifier = EnchantmentHelper.getDamageProtection(livingTarget.getArmorSlots(), source);
+             if (enchantDamageModifier > 0) {
+                 damage = CombatRules.getDamageAfterMagicAbsorb((float) damage, (float) enchantDamageModifier);
+@@ -172,10 +172,10 @@ public class EntityHelperImpl extends EntityHelper {
+     public void forceInteraction(Player player, Location location) {
+         CraftPlayer craftPlayer = (CraftPlayer) player;
+         // TODO: 1.20.6: passing a null player isn't valid (and seemingly never was) - need to require HumanEntity in the mechanism
+-        // Backport start - Refactored method
+-//        ((CraftBlock) location.getBlock()).getNMS().useItemOn(craftPlayer.getHandle().getMainHandItem(), ((CraftWorld) location.getWorld()).getHandle(),
+-        ((CraftBlock) location.getBlock()).getNMS().use(((CraftWorld) location.getWorld()).getHandle(),
+-        // Backport end
++        // Backport start - Refactored method
++//        ((CraftBlock) location.getBlock()).getNMS().useItemOn(craftPlayer.getHandle().getMainHandItem(), ((CraftWorld) location.getWorld()).getHandle(),
++        ((CraftBlock) location.getBlock()).getNMS().use(((CraftWorld) location.getWorld()).getHandle(),
++        // Backport end
+                 craftPlayer.getHandle(), InteractionHand.MAIN_HAND,
+                 new BlockHitResult(new Vec3(0, 0, 0), null, CraftLocation.toBlockPosition(location), false));
+     }
+@@ -466,7 +466,7 @@ public class EntityHelperImpl extends EntityHelper {
+             NMSHandler.chunkHelper.changeChunkServerThread(world);
+             return ((CraftWorld) world).getHandle().clip(new ClipContext(new Vec3(start.getX(), start.getY(), start.getZ()),
+                     new Vec3(end.getX(), end.getY(), end.getZ()),
+-                    ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, /*CollisionContext.empty()*/null)); // Backport - Different arguments in different MC version
++                    ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, /*CollisionContext.empty()*/null)); // Backport - Different arguments in different MC version
+         }
+         finally {
+             NMSHandler.chunkHelper.restoreServerThread(world);
+@@ -524,7 +524,7 @@ public class EntityHelperImpl extends EntityHelper {
+         packetData.writeByte((byte)((int)(location.getYaw() * 256.0F / 360.0F)));
+         packetData.writeByte((byte)((int)(location.getPitch() * 256.0F / 360.0F)));
+         packetData.writeBoolean(entity.isOnGround());
+-        ClientboundTeleportEntityPacket packet = /*ClientboundTeleportEntityPacket.STREAM_CODEC.decode(packetData)*/new ClientboundTeleportEntityPacket(packetData); // Backport - StreamCodec does not exist in MC 1.20.1
++        ClientboundTeleportEntityPacket packet = /*ClientboundTeleportEntityPacket.STREAM_CODEC.decode(packetData)*/new ClientboundTeleportEntityPacket(packetData); // Backport - StreamCodec does not exist in MC 1.20.1
+         for (Player player : getPlayersThatSee(entity)) {
+             PacketHelperImpl.send(player, packet);
+         }
+@@ -554,22 +554,22 @@ public class EntityHelperImpl extends EntityHelper {
+         ((CraftEntity) entity).getHandle().setBoundingBox(new AABB(box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX(), box.getMaxY(), box.getMaxZ()));
+     }
+ 
+-    // Backport start - Newer API does not exist
+-    @Override
+-    public List<Player> getPlayersThatSee(Entity entity) {
+-        ChunkMap tracker = ((ServerLevel) ((CraftEntity) entity).getHandle().level()).getChunkSource().chunkMap;
+-        ChunkMap.TrackedEntity entityTracker = tracker.entityMap.get(entity.getEntityId());
+-        ArrayList<Player> output = new ArrayList<>();
+-        if (entityTracker == null) {
+-            return output;
+-        }
+-        for (net.minecraft.server.network.ServerPlayerConnection player : entityTracker.seenBy) {
+-            output.add(player.getPlayer().getBukkitEntity());
+-        }
+-        return output;
+-    }
+-    // Backport end
+-
++    // Backport start - Newer API does not exist
++    @Override
++    public List<Player> getPlayersThatSee(Entity entity) {
++        ChunkMap tracker = ((ServerLevel) ((CraftEntity) entity).getHandle().level()).getChunkSource().chunkMap;
++        ChunkMap.TrackedEntity entityTracker = tracker.entityMap.get(entity.getEntityId());
++        ArrayList<Player> output = new ArrayList<>();
++        if (entityTracker == null) {
++            return output;
++        }
++        for (net.minecraft.server.network.ServerPlayerConnection player : entityTracker.seenBy) {
++            output.add(player.getPlayer().getBukkitEntity());
++        }
++        return output;
++    }
++    // Backport end
++
+     public static final Field EXPERIENCE_ORB_AGE = ReflectionHelper.getFields(net.minecraft.world.entity.ExperienceOrb.class).get(ReflectionMappingsInfo.ExperienceOrb_age, int.class);
+ 
+     @Override
+@@ -637,7 +637,7 @@ public class EntityHelperImpl extends EntityHelper {
+             case FALL -> sources.fall();
+             case FIRE -> sources.inFire();
+             case FIRE_TICK -> sources.onFire();
+-            case MELTING -> sources.melting; // Backport - Refactored class
++            case MELTING -> sources.melting; // Backport - Refactored class
+             case LAVA -> sources.lava();
+             case DROWNING -> sources.drown();
+             case BLOCK_EXPLOSION -> nmsSource instanceof PrimedTnt primedTnt ? sources.explosion(primedTnt, primedTnt.getOwner()) : sources.explosion(null);
+@@ -645,7 +645,7 @@ public class EntityHelperImpl extends EntityHelper {
+             case VOID -> sources.fellOutOfWorld();
+             case LIGHTNING -> sources.lightningBolt();
+             case STARVATION -> sources.starve();
+-            case POISON -> sources.poison; // Backport - Refactored class
++            case POISON -> sources.poison; // Backport - Refactored class
+             case MAGIC -> sources.magic();
+             case WITHER -> sources.wither();
+             case FALLING_BLOCK -> sources.fallingBlock(nmsSource);
+@@ -704,7 +704,7 @@ public class EntityHelperImpl extends EntityHelper {
+     public EntityTag getMobSpawnerDisplayEntity(CreatureSpawner spawner) {
+         SpawnerBlockEntity nmsSpawner = BlockHelperImpl.getTE((CraftCreatureSpawner) spawner);
+         ServerLevel level = ((CraftWorld) spawner.getWorld()).getHandle();
+-        net.minecraft.world.entity.Entity nmsEntity = nmsSpawner.getSpawner().getOrCreateDisplayEntity(level, level.random, nmsSpawner.getBlockPos()); // Backport - Different arguments in different MC version
++        net.minecraft.world.entity.Entity nmsEntity = nmsSpawner.getSpawner().getOrCreateDisplayEntity(level, level.random, nmsSpawner.getBlockPos()); // Backport - Different arguments in different MC version
+         return new EntityTag(nmsEntity.getBukkitEntity());
+     }
+ 
+@@ -758,7 +758,7 @@ public class EntityHelperImpl extends EntityHelper {
+     }
+ 
+     // Use reflection because Paper changes the method return type
+-    public static final MethodHandle PLAYERLIST_REMOVE = ReflectionHelper.getMethodHandle(PlayerList.class, "remove", ServerPlayer.class);
++    public static final MethodHandle PLAYERLIST_REMOVE = ReflectionHelper.getMethodHandle(PlayerList.class, "m_11286_", ServerPlayer.class); // Mohist Compatibility - remove(ServerPlayer) method has not been remapped in Mohist mapping
+ 
+     @Override
+     public void setUUID(Entity entity, UUID id) {
+@@ -777,7 +777,7 @@ public class EntityHelperImpl extends EntityHelper {
+             nmsEntity.unsetRemoved();
+             nmsEntity.setUUID(id);
+             if (nmsEntity instanceof ServerPlayer nmsPlayer) {
+-                playerList.placeNewPlayer(DenizenNetworkManagerImpl.getConnection(nmsPlayer), nmsPlayer/*, new CommonListenerCookie(nmsPlayer.getGameProfile(), nmsPlayer.connection.latency(), nmsPlayer.clientInformation(), nmsPlayer.connection.isTransferred())*/); // Backport - Cookie does not exist in MC 1.20.1
++                playerList.placeNewPlayer(DenizenNetworkManagerImpl.getConnection(nmsPlayer), nmsPlayer/*, new CommonListenerCookie(nmsPlayer.getGameProfile(), nmsPlayer.connection.latency(), nmsPlayer.clientInformation(), nmsPlayer.connection.isTransferred())*/); // Backport - Cookie does not exist in MC 1.20.1
+             }
+             else {
+                 level.addFreshEntity(nmsEntity);
