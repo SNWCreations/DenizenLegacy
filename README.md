@@ -3,7 +3,8 @@
 This project brings back the support of
 older Minecraft versions for Denizen.
 
-This branch is for Minecraft 1.20.1.
+This branch is for Minecraft 1.20.1,
+ and **ONLY** compatible with [Mohist](https://github.com/MohistMC/Mohist).
 
 Developed for [The SRS Project](https://github.com/TheSRSProject)
 because our tech stack is based on Minecraft 1.20.1.
