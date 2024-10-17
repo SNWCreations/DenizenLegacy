@@ -5,6 +5,19 @@ Date: Sun, 13 Oct 2024 15:41:30 +0800
 Subject: [PATCH] feat: the backport
 
 
+diff --git a/dist/pom.xml b/dist/pom.xml
+index d8474d52e1bcadcac75e49e58707f0126c861d6d..928f2607faf89922c686841a05a98264b30d6216 100644
+--- a/dist/pom.xml
++++ b/dist/pom.xml
+@@ -181,7 +181,7 @@
+                 <artifactId>maven-jar-plugin</artifactId>
+                 <version>3.3.0</version>
+                 <configuration>
+-                    <finalName>Denizen-${DENIZEN_VERSION}-b${BUILD_NUMBER}-${BUILD_CLASS}</finalName>
++                    <finalName>Denizen-MC1.20.1-${DENIZEN_VERSION}-b${BUILD_NUMBER}-${BUILD_CLASS}</finalName> <!-- Backport - Mark the plugin as only supporting MC 1.20.1 -->
+                     <outputDirectory>../target</outputDirectory>
+                     <archive>
+                         <manifest>
 diff --git a/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java b/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java
 index f47fd55f95fdcef95429c67115e8c9d51eaf83a9..7b77ed9acf265fdbbaff39cb0480bc5c08e86091 100644
 --- a/paper/src/main/java/com/denizenscript/denizen/paper/PaperModule.java
@@ -94,7 +107,7 @@ index 5d4ca461603babc0fef738ff68fbb584552dc28a..f5e69a7cb3f185d9fabaec718e306ecd
      default void setVanillaTags(Material material, Set<String> tags) {
          throw new UnsupportedOperationException();
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
-index be2bc3b6060a2a5aa1ce50c061605722764a9b35..bce4a4acfabd4088902acda605a45888ac3b77bc 100644
+index be2bc3b6060a2a5aa1ce50c061605722764a9b35..afbec0e8b5115e20691b086e35867c23d3011313 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
 @@ -382,9 +382,14 @@ public abstract class EntityHelper {
