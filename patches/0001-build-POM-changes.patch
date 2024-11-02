@@ -37,27 +37,27 @@ index 0ce5cb57454e19999c963930adbd119169c10b3c..d8474d52e1bcadcac75e49e58707f012
              <groupId>com.denizenscript</groupId>
              <artifactId>denizen-paper</artifactId>
 diff --git a/paper/pom.xml b/paper/pom.xml
-index 2489e766d0bbc74c6503285195f71583defdb3de..05ea6687702706ce66677efb6c0e15d18cd05531 100644
+index 415da04a99934dd9e4bd6dbf19a119a682361315..05ea6687702706ce66677efb6c0e15d18cd05531 100644
 --- a/paper/pom.xml
 +++ b/paper/pom.xml
 @@ -25,7 +25,7 @@
          <dependency>
              <groupId>io.papermc.paper</groupId>
              <artifactId>paper-api</artifactId>
--            <version>1.21.1-R0.1-SNAPSHOT</version>
+-            <version>1.21.3-R0.1-SNAPSHOT</version>
 +            <version>1.20.1-R0.1-SNAPSHOT</version> <!-- Backport - Use 1.20.1 -->
              <scope>provided</scope>
          </dependency>
          <dependency>
 diff --git a/plugin/pom.xml b/plugin/pom.xml
-index 4ce441f6e11238e1244e7c2c36ed96807efe84a2..70c94801fd7ebf6340c199017438c5ffc687c93e 100644
+index 27686fac19a715c5f2caa9ece90b2177c6566f1c..70c94801fd7ebf6340c199017438c5ffc687c93e 100644
 --- a/plugin/pom.xml
 +++ b/plugin/pom.xml
 @@ -30,7 +30,7 @@
          <dependency>
              <groupId>org.spigotmc</groupId>
              <artifactId>spigot-api</artifactId>
--            <version>1.21.1-R0.1-SNAPSHOT</version>
+-            <version>1.21.3-R0.1-SNAPSHOT</version>
 +            <version>1.20.1-R0.1-SNAPSHOT</version> <!-- Backport - Use 1.20.1 -->
              <type>jar</type>
              <scope>provided</scope>

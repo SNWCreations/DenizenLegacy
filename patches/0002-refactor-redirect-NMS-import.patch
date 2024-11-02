@@ -151,10 +151,10 @@ index 34eb7509b754cb3c2f7bc035672c27fb10196306..0c1aa4a9d65e37fe459e90f18deabf67
  import org.bukkit.inventory.ItemStack;
  import org.bukkit.scoreboard.Scoreboard;
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
-index d51abcde37007781ce16fb0838c3eee7aaffeedd..51d9b61a70533acb7c4185bb198a2d10d5d4f7e9 100644
+index c8b1400c6ae81a00a3aa5df4e15c78fa0ebc3e87..09c77c24613c820b68aa091104548d7c70dff1ef 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
-@@ -20,10 +20,10 @@ import net.minecraft.world.entity.EntityType;
+@@ -19,10 +19,10 @@ import net.minecraft.world.entity.Entity;
  import net.minecraft.world.entity.EquipmentSlot;
  import net.minecraft.world.entity.LivingEntity;
  import org.bukkit.NamespacedKey;
@@ -168,7 +168,7 @@ index d51abcde37007781ce16fb0838c3eee7aaffeedd..51d9b61a70533acb7c4185bb198a2d10
 +import org.bukkit.craftbukkit.v1_20_R1.util.CraftNamespacedKey;
  import org.bukkit.enchantments.Enchantment;
  import org.bukkit.event.entity.EntityDamageEvent;
- import net.minecraft.world.item.enchantment.Enchantment.EnchantmentDefinition;
+ 
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
 index 0822fa3036aac64ba539a0b19feb89f423ce5abe..0b7762b5d7f3017894779b7084703f079e5a8a7f 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EntityHelperImpl.java
@@ -197,10 +197,10 @@ index 0822fa3036aac64ba539a0b19feb89f423ce5abe..0b7762b5d7f3017894779b7084703f07
  import org.bukkit.event.entity.EntityDamageEvent;
  import org.bukkit.inventory.EquipmentSlot;
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
-index 94a3c107c47e5bef3e45aaf88862c8ba9ea5024e..0727d350a72129f5480601e896541430b0239ac3 100644
+index 05aff82c5eb604f8b23e3be97fd16091a352df1e..6aacf0e4bcc4fa8a3a979dcbf3e1928749f6717a 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
-@@ -22,10 +22,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
+@@ -21,10 +21,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
  import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
  import net.minecraft.world.phys.Vec3;
  import org.bukkit.Location;
@@ -382,16 +382,15 @@ index 912f37c5c259dbe154623109836d0fe881e995fe..5307e9fc47a217ca80043e330cf0b0c1
  
  import java.lang.invoke.MethodHandle;
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
-index 1257f215571244e7bbbce1699d8f505873342e6b..f6570aea104fdd1be2c66a57bcf2a00f83543fae 100644
+index 45ffcc8f4dbbfd55d40df6a3aedb4d439ba5dae3..c025960ec41d3dc44ff770389161a6ce101e066f 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
-@@ -2,9 +2,9 @@ package com.denizenscript.denizen.nms.v1_20.impl.entities;
+@@ -2,8 +2,9 @@ package com.denizenscript.denizen.nms.v1_20.impl.entities;
  
  import com.denizenscript.denizen.nms.interfaces.FakeArrow;
  import net.minecraft.world.entity.projectile.AbstractArrow;
 -import org.bukkit.craftbukkit.v1_20_R4.CraftServer;
 -import org.bukkit.craftbukkit.v1_20_R4.entity.CraftAbstractArrow;
--import org.bukkit.craftbukkit.v1_20_R4.entity.CraftArrow;
 +import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 +import org.bukkit.craftbukkit.v1_20_R1.entity.CraftAbstractArrow;
 +import org.bukkit.craftbukkit.v1_20_R1.entity.CraftArrow;
@@ -599,11 +598,11 @@ index 2d6958a7211f68be68bda2aecd767e4a9469c958..878dbb1b89610a7ad8bb319ec9fad613
  import java.util.Set;
  
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
-index c7e2119967bc2749171e9cb30b0c80d6d405590c..e4dd9c036fd33d36bba57e150e70d0d54e3396da 100644
+index f4ba9350ee97f115ced153ba2742a8c6f586cf50..85c3fae7c8efdff4023cd6087254ac0b1eca3e68 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
-@@ -8,7 +8,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
- import net.minecraft.network.chat.Component;
+@@ -7,7 +7,7 @@ import com.denizenscript.denizencore.utilities.debugging.Debug;
+ import net.md_5.bungee.chat.ComponentSerializer;
  import net.minecraft.network.protocol.game.ClientboundPlayerChatPacket;
  import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 -import org.bukkit.craftbukkit.v1_20_R4.util.CraftChatMessage;
