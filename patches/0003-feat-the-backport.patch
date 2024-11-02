@@ -107,10 +107,10 @@ index 5d4ca461603babc0fef738ff68fbb584552dc28a..f5e69a7cb3f185d9fabaec718e306ecd
      default void setVanillaTags(Material material, Set<String> tags) {
          throw new UnsupportedOperationException();
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
-index be2bc3b6060a2a5aa1ce50c061605722764a9b35..afbec0e8b5115e20691b086e35867c23d3011313 100644
+index 7b63b179c1fac31cef4197a67dd1c8e9f72691c6..4b2d40b1fcacfa2f330fdc8d17c1bfc71151a537 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
 +++ b/plugin/src/main/java/com/denizenscript/denizen/nms/interfaces/EntityHelper.java
-@@ -382,9 +382,14 @@ public abstract class EntityHelper {
+@@ -387,9 +387,14 @@ public abstract class EntityHelper {
  
      public abstract void setBoundingBox(Entity entity, BoundingBox box);
  
@@ -125,11 +125,11 @@ index be2bc3b6060a2a5aa1ce50c061605722764a9b35..afbec0e8b5115e20691b086e35867c23
  
      public void sendAllUpdatePackets(Entity entity) {
          throw new UnsupportedOperationException();
-@@ -446,13 +451,21 @@ public abstract class EntityHelper {
+@@ -451,13 +456,21 @@ public abstract class EntityHelper {
      }
  
      public float getStepHeight(Entity entity) {
--        return entity instanceof LivingEntity livingEntity ? (float) livingEntity.getAttribute(Attribute.GENERIC_STEP_HEIGHT).getBaseValue() : 0;
+-        return entity instanceof LivingEntity livingEntity ? (float) livingEntity.getAttribute(ATTRIBUTE_STEP_HEIGHT).getBaseValue() : 0;
 +        // Backport start - Step height attribute does not exist in MC 1.20.1
 +//        return entity instanceof LivingEntity livingEntity ? (float) livingEntity.getAttribute(Attribute.GENERIC_STEP_HEIGHT).getBaseValue() : 0;
 +        throw new UnsupportedOperationException();
@@ -140,7 +140,7 @@ index be2bc3b6060a2a5aa1ce50c061605722764a9b35..afbec0e8b5115e20691b086e35867c23
 +        // Backport start - Step height attribute does not exist in MC 1.20.1
 +        /*
          if (entity instanceof LivingEntity livingEntity) {
-             livingEntity.getAttribute(Attribute.GENERIC_STEP_HEIGHT).setBaseValue(stepHeight);
+             livingEntity.getAttribute(ATTRIBUTE_STEP_HEIGHT).setBaseValue(stepHeight);
          }
 +        */
 +        throw new UnsupportedOperationException();
@@ -148,7 +148,7 @@ index be2bc3b6060a2a5aa1ce50c061605722764a9b35..afbec0e8b5115e20691b086e35867c23
      }
  
      public List<Object> convertInternalEntityDataValues(Entity entity, MapTag internalData) {
-@@ -483,7 +496,7 @@ public abstract class EntityHelper {
+@@ -488,7 +501,7 @@ public abstract class EntityHelper {
  
      public static class EntityEntersVehicleScriptEventImpl extends EntityEntersVehicleScriptEvent {
          @EventHandler
@@ -157,7 +157,7 @@ index be2bc3b6060a2a5aa1ce50c061605722764a9b35..afbec0e8b5115e20691b086e35867c23
              fire(event, event.getMount());
          }
      }
-@@ -494,7 +507,7 @@ public abstract class EntityHelper {
+@@ -499,7 +512,7 @@ public abstract class EntityHelper {
  
      public static class EntityExitsVehicleScriptEventImpl extends EntityExitsVehicleScriptEvent {
          @EventHandler
@@ -166,6 +166,28 @@ index be2bc3b6060a2a5aa1ce50c061605722764a9b35..afbec0e8b5115e20691b086e35867c23
              fire(event, event.getDismounted());
          }
      }
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/WorldTag.java b/plugin/src/main/java/com/denizenscript/denizen/objects/WorldTag.java
+index fd5ec4eeca3eeeed085935ad811144ebfc4779ba..394aefeaf3e0a28efe255d1a63c2c9f315af8137 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/objects/WorldTag.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/objects/WorldTag.java
+@@ -1079,6 +1079,8 @@ public class WorldTag implements ObjectTag, Adjustable, FlaggableObject {
+             }
+         });
+ 
++        // Backport start - Remove this tag as no 1.20.1 API for this
++        /*
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20)) {
+ 
+             // <--[mechanism]
+@@ -1103,6 +1105,8 @@ public class WorldTag implements ObjectTag, Adjustable, FlaggableObject {
+                 }
+             });
+         }
++        */
++        // Backport end
+ 
+     }
+ 
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java
 index 529ea7aa35541b9c8af9f1b2ddbced68200e3f4a..f3ccbf92e46b78066a9e364affadfad0ac0bd663 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/PropertyRegistry.java
@@ -184,33 +206,124 @@ index 529ea7aa35541b9c8af9f1b2ddbced68200e3f4a..f3ccbf92e46b78066a9e364affadfad0
          if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_19)) {
              PropertyParser.registerProperty(EntityText.class, EntityTag.class);
              PropertyParser.registerProperty(EntityTextShadowed.class, EntityTag.class);
-diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
-index f72fe102762f26abbbc91bf2efe2194b043f0d33..25c87aacc41943b449197c3b5dea1945832dadec 100644
---- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
-+++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityColor.java
-@@ -150,10 +150,18 @@ public class EntityColor extends EntityProperty<ElementTag> {
-             Cat cat = as(Cat.class);
-             ListTag list = mechanism.valueAsType(ListTag.class);
-             String catTypeStr = list.get(0);
-+            // Backport start - We're just legacy
-+            /*
-             Cat.Type catType = LegacyNamingHelper.convert(Cat.Type.class, catTypeStr);
-             if (catType != null) {
-                 cat.setCatType(catType);
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityAttributeModifiers.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityAttributeModifiers.java
+index d6ef4c54c286dfbbbea9354caf98ab8a50afbddd..7e223e483c2905e0c0485c1634bc5bbf56749734 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityAttributeModifiers.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityAttributeModifiers.java
+@@ -23,7 +23,7 @@ import org.bukkit.attribute.Attribute;
+ import org.bukkit.attribute.AttributeInstance;
+ import org.bukkit.attribute.AttributeModifier;
+ import org.bukkit.inventory.EquipmentSlot;
+-import org.bukkit.inventory.EquipmentSlotGroup;
++//import org.bukkit.inventory.EquipmentSlotGroup; // Backport - This does not exist in Bukkit 1.20.1
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+@@ -84,15 +84,24 @@ public class EntityAttributeModifiers implements Property {
+         result.putObject("name", new ElementTag(modifier.getName()));
+         result.putObject("amount", new ElementTag(modifier.getAmount()));
+         result.putObject("operation", new ElementTag(modifier.getOperation()));
++        // Backport start - No AttributeModifier.getSlotGroup method on 1.20.1
++        /*
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20)) {
+             result.putObject("slot", new ElementTag(modifier.getSlotGroup().toString(), true));
++        */
++        if (false) {
++        // Backport end
+         }
+         else {
+             result.putObject("slot", new ElementTag(modifier.getSlot() == null ? "any" : modifier.getSlot().name()));
+         }
++        // Backport start - We're not on 1.21
++        /*
+         if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_21)) {
+             result.putObject("key", new ElementTag(Utilities.namespacedKeyToString(modifier.getKey()), true));
+         }
++        */
++        // Backport end
+         // TODO: remove/deprecate the UUID key
+         result.putObject("id", new ElementTag(modifier.getUniqueId().toString()));
+         return result;
+@@ -114,9 +123,11 @@ public class EntityAttributeModifiers implements Property {
+             Debug.echoError("Attribute modifier amount '" + amount + "' is not a valid decimal number.");
+             return null;
+         }
+-        if (!NMSHandler.getVersion().isAtLeast(NMSVersion.v1_21)) {
++        // Backport start - We're on 1.20.1
++//        if (!NMSHandler.getVersion().isAtLeast(NMSVersion.v1_21)) {
+             return parseLegacyModifier(attr, map, amountValue, operationValue);
+-        }
++//        }
++        /*
+         ElementTag key = map.getElement("key");
+         if (key == null && map.size() >= 2) {
+             BukkitImplDeprecations.pre1_21AttributeFormat.warn(context);
+@@ -137,6 +148,8 @@ public class EntityAttributeModifiers implements Property {
+             group = slot.getGroup();
+         }
+         return new AttributeModifier(Utilities.parseNamespacedKey(key.asString()), amountValue, operationValue, group);
++        */
++        // Backport end
+     }
+ 
+     @Deprecated(forRemoval = true)
+@@ -153,6 +166,8 @@ public class EntityAttributeModifiers implements Property {
+             return null;
+         }
+         EquipmentSlot slotValue = CoreUtilities.equalsIgnoreCase(slot.toString(), "any") ? null : slot.asEnum(EquipmentSlot.class);
++        // Backport start - We're on 1.20.1 but not 1.20.6
++        /*
+         if (slotValue == null && NMSHandler.getVersion().isAtLeast(NMSVersion.v1_20)) {
+             EquipmentSlotGroup group = EquipmentSlotGroup.getByName(slot.asString());
+             if (group == null) {
+@@ -161,6 +176,7 @@ public class EntityAttributeModifiers implements Property {
              }
-+            */
-+            ElementTag catType = new ElementTag(list.get(0));
-+            if (catType.matchesEnum(Cat.Type.class)) {
-+                cat.setCatType(catType.asEnum(Cat.Type.class));
-+            }
-+            // Backport end
-             else {
-                 mechanism.echoError("Invalid cat type specified: " + catTypeStr);
-             }
+             return new AttributeModifier(idValue, name == null ? attr.name() : name.asString(), amount, operation, group);
+         }
++        */
+         return new AttributeModifier(idValue, name == null ? attr.name() : name.toString(), amount, operation, slotValue);
+     }
+ 
+@@ -369,8 +385,13 @@ public class EntityAttributeModifiers implements Property {
+                             if (!ex.getMessage().equals("Modifier is already applied on this attribute!")) {
+                                 throw ex;
+                             }
++                            // Backport start - We're on 1.20.1
++                            /*
+                             if (NMSHandler.getVersion().isAtLeast(NMSVersion.v1_21)) {
+                                 mechanism.echoError("Cannot add attribute with key '" + modifier.getKey() + "' as the entity already has a modifier with the same key.");
++                            */
++                            if (false) {
++                            // Backport end
+                             }
+                             else {
+                                 mechanism.echoError("Cannot add attribute with ID '" + modifier.getUniqueId() + "' as the entity already has a modifier with the same ID.");
+@@ -431,7 +452,7 @@ public class EntityAttributeModifiers implements Property {
+                         continue;
+                     }
+                     for (AttributeModifier modifer : instance.getModifiers()) {
+-                        if (is1_21 ? modifer.getKey().equals(key) : modifer.getUniqueId().equals(id)) {
++                        if (/*is1_21 ? modifer.getKey().equals(key) : */modifer.getUniqueId().equals(id)) { // Backport - We're on 1.20.1
+                             instance.removeModifier(modifer);
+                             break;
+                         }
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java.ignored
 similarity index 100%
 rename from plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java
 rename to plugin/src/main/java/com/denizenscript/denizen/objects/properties/entity/EntityTeleportDuration.java.ignored
+diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemAttributeModifiers.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemAttributeModifiers.java
+index fb1018917562096ae40928f54dc4f231eb0f71b2..a4c4bc3e760e9d79c4ef90684e12771356bf5e23 100644
+--- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemAttributeModifiers.java
++++ b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemAttributeModifiers.java
+@@ -173,7 +173,7 @@ public class ItemAttributeModifiers extends ItemProperty<MapTag> {
+                 Multimap<org.bukkit.attribute.Attribute, AttributeModifier> metaMap = meta.getAttributeModifiers();
+                 for (org.bukkit.attribute.Attribute attribute : metaMap.keys()) {
+                     for (AttributeModifier modifer : metaMap.get(attribute)) {
+-                        if (is1_21 ? modifer.getKey().equals(key) : modifer.getUniqueId().equals(id)) {
++                        if (/*is1_21 ? modifer.getKey().equals(key) : */modifer.getUniqueId().equals(id)) { // Backport - We're on 1.20.1
+                             meta.removeAttributeModifier(attribute, modifer);
+                             break;
+                         }
 diff --git a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java b/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java
 index 93bbed2f038006f3d82cb8eb3e65a989664a1510..e8053fb0574196384b4c06e132867c54b167e430 100644
 --- a/plugin/src/main/java/com/denizenscript/denizen/objects/properties/item/ItemPotion.java
@@ -296,22 +409,6 @@ index a379d8e1f41f2ffb9178531a09f20a90fe610ed0..8b2d973e97618cf34245f3d37e0c6c87
  
          // <--[tag]
          // @attribute <server.world_types>
-diff --git a/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java b/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
-index 4fbfa0966b6a8b6dc3213dd9f52e94643e64a2d5..187cbb465af511ffa417322b45e0ab1df6734d6c 100644
---- a/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
-+++ b/plugin/src/main/java/com/denizenscript/denizen/utilities/maps/MapCursor.java
-@@ -27,7 +27,10 @@ public class MapCursor extends MapObject {
-     }
- 
-     public org.bukkit.map.MapCursor.Type getType(PlayerTag player) {
--        return LegacyNamingHelper.convert(org.bukkit.map.MapCursor.Type.class, tag(typeTag, player));
-+        // Backport start - We're just legacy
-+//        return LegacyNamingHelper.convert(org.bukkit.map.MapCursor.Type.class, tag(typeTag, player));
-+        return org.bukkit.map.MapCursor.Type.valueOf(tag(typeTag, player).toUpperCase());
-+        // Backport end
-     }
- 
-     private byte yawToDirection(double yaw) {
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
 index 820b41713b7db3a9ead8a53c7ee80da20fbee108..1be08b84009c9f4c77e1a2f304f85b77f47b1ec2 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/Handler.java
@@ -901,19 +998,25 @@ index 0c1aa4a9d65e37fe459e90f18deabf673b7a9abb..9d165d5872f9cb7500a063610153326c
          fakePlayer.forceSetPositionRotation(location.getX(), location.getY(), location.getZ(),
                  location.getYaw(), location.getPitch());
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
-index 51d9b61a70533acb7c4185bb198a2d10d5d4f7e9..cd71f0bc530ec33bfdf33e0cc3a1261bd10a9428 100644
+index 09c77c24613c820b68aa091104548d7c70dff1ef..b3496731c2dfee586c6d304b6243de429e4c90b9 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/EnchantmentHelperImpl.java
-@@ -26,7 +26,7 @@ import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
- import org.bukkit.craftbukkit.v1_20_R1.util.CraftNamespacedKey;
+@@ -19,10 +19,10 @@ import net.minecraft.world.entity.Entity;
+ import net.minecraft.world.entity.EquipmentSlot;
+ import net.minecraft.world.entity.LivingEntity;
+ import org.bukkit.NamespacedKey;
+-import org.bukkit.craftbukkit.v1_20_R1.enchantments.CraftEnchantment;
+-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
+-import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
+-import org.bukkit.craftbukkit.v1_20_R1.util.CraftNamespacedKey;
++import org.bukkit.craftbukkit.v1_20_R1.enchantments.CraftEnchantment;
++import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
++import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
++import org.bukkit.craftbukkit.v1_20_R1.util.CraftNamespacedKey;
  import org.bukkit.enchantments.Enchantment;
  import org.bukkit.event.entity.EntityDamageEvent;
--import net.minecraft.world.item.enchantment.Enchantment.EnchantmentDefinition;
-+//import net.minecraft.world.item.enchantment.Enchantment.EnchantmentDefinition; // Backport - This does not exist in MC 1.20.1
  
- import java.lang.reflect.Field;
- import java.util.IdentityHashMap;
-@@ -34,24 +34,28 @@ import java.util.Map;
+@@ -32,24 +32,28 @@ import java.util.Map;
  
  public class EnchantmentHelperImpl extends EnchantmentHelper {
      public static final Field REGISTRY_FROZEN = ReflectionHelper.getFields(MappedRegistry.class).get(ReflectionMappingsInfo.MappedRegistry_frozen, boolean.class);
@@ -944,7 +1047,7 @@ index 51d9b61a70533acb7c4185bb198a2d10d5d4f7e9..cd71f0bc530ec33bfdf33e0cc3a1261b
                  // TODO: 1.20.6: methods are final now and the values are provided by EnchantmentDefinition - would probably need to create a new one on reload and modify the existing enchantment
  //                @Override
  //                public int getMinLevel() {
-@@ -142,13 +146,18 @@ public class EnchantmentHelperImpl extends EnchantmentHelper {
+@@ -140,13 +144,18 @@ public class EnchantmentHelperImpl extends EnchantmentHelper {
              NamespacedKey enchantmentKey = new NamespacedKey(Denizen.getInstance(), script.script.id);
              Registry.register(BuiltInRegistries.ENCHANTMENT, enchantmentKey.toString(), nmsEnchant);
              String enchName = CoreUtilities.toUpperCase(script.script.id);
@@ -1095,10 +1198,25 @@ index 0b7762b5d7f3017894779b7084703f079e5a8a7f..cc7ca972fa16b6966c830ac267df142d
              else {
                  level.addFreshEntity(nmsEntity);
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
-index 0727d350a72129f5480601e896541430b0239ac3..4bd4411f4e95c89d069488563485d2bcce70ec00 100644
+index 6aacf0e4bcc4fa8a3a979dcbf3e1928749f6717a..c69a0bd1fe74e0dc3349e90bed44d68b16459798 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/helpers/FishingHelperImpl.java
-@@ -43,7 +43,7 @@ public class FishingHelperImpl implements FishingHelper {
+@@ -21,10 +21,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
+ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+ import net.minecraft.world.phys.Vec3;
+ import org.bukkit.Location;
+-import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftFishHook;
+-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
+-import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
++import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
++import org.bukkit.craftbukkit.v1_20_R1.entity.CraftFishHook;
++import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
++import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
+ import org.bukkit.entity.FishHook;
+ import org.bukkit.entity.Player;
+ import org.bukkit.event.entity.CreatureSpawnEvent;
+@@ -42,7 +42,7 @@ public class FishingHelperImpl implements FishingHelper {
              case DEFAULT -> {
                  float f = ((CraftWorld) fishHook.getWorld()).getHandle().random.nextFloat();
                  int i = EnchantmentHelper.getMobLooting(nmsHook.getPlayerOwner());
@@ -1107,7 +1225,7 @@ index 0727d350a72129f5480601e896541430b0239ac3..4bd4411f4e95c89d069488563485d2bc
                  float f1 = 0.1F - (float) i * 0.025F - (float) j * 0.01F;
                  float f2 = 0.05F + (float) i * 0.01F - (float) j * 0.01F;
  
-@@ -71,12 +71,21 @@ public class FishingHelperImpl implements FishingHelper {
+@@ -70,12 +70,21 @@ public class FishingHelperImpl implements FishingHelper {
      }
  
      public ItemStack getRandomReward(FishingHook nmsHook, ResourceKey<LootTable> key) {
@@ -1115,7 +1233,7 @@ index 0727d350a72129f5480601e896541430b0239ac3..4bd4411f4e95c89d069488563485d2bc
 +        return getRandomReward(nmsHook, key.location());
 +    }
 +
-+    public ItemStack getRandomReward(FishingHook nmsHook, ResourceLocation key) {
++    public ItemStack getRandomReward(FishingHook nmsHook, net.minecraft.resources.ResourceLocation key) {
 +    // Backport end
          ServerLevel nmsWorld = (ServerLevel) nmsHook.level();
          Map<LootContextParam<?>, Object> params = Maps.newIdentityHashMap();
@@ -1802,13 +1920,13 @@ index 5b772caf224f7d7fdc87a764fde4ad347ab95144..15beb15fed81d013ce1e3de1ea3b9cc8
                  }
              }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/SidebarImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/SidebarImpl.java
-index ed33d38f76888ada5795016e1c3fa6f9c0d0ee72..1e3e3cd11de5c5b74d42c4b2e6625a34654578aa 100644
+index 5a76a4a10e352b8c18983c8f474d3aa50d3128ed..c3f8e68f16b0a673639d1965c07c64efcd4065d9 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/SidebarImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/SidebarImpl.java
-@@ -8,12 +8,13 @@ import com.denizenscript.denizencore.utilities.debugging.Debug;
+@@ -7,12 +7,13 @@ import com.denizenscript.denizen.utilities.FormattedTextHelper;
+ import com.denizenscript.denizencore.utilities.debugging.Debug;
  import net.md_5.bungee.api.ChatColor;
  import net.minecraft.network.chat.Component;
- import net.minecraft.network.chat.MutableComponent;
 -import net.minecraft.network.chat.numbers.StyledFormat;
 +//import net.minecraft.network.chat.numbers.StyledFormat; // Backport - This does not exist in MC 1.20.1
  import net.minecraft.network.protocol.game.ClientboundSetDisplayObjectivePacket;
@@ -1821,7 +1939,7 @@ index ed33d38f76888ada5795016e1c3fa6f9c0d0ee72..1e3e3cd11de5c5b74d42c4b2e6625a34
  import net.minecraft.world.scores.Objective;
  import net.minecraft.world.scores.PlayerTeam;
  import net.minecraft.world.scores.Scoreboard;
-@@ -49,8 +50,10 @@ public class SidebarImpl extends Sidebar {
+@@ -48,8 +49,10 @@ public class SidebarImpl extends Sidebar {
      public SidebarImpl(Player player) {
          super(player);
          Component chatComponentTitle = Handler.componentToNMS(FormattedTextHelper.parse(title, ChatColor.WHITE));
@@ -1834,7 +1952,7 @@ index ed33d38f76888ada5795016e1c3fa6f9c0d0ee72..1e3e3cd11de5c5b74d42c4b2e6625a34
      }
  
      @Override
-@@ -81,9 +84,12 @@ public class SidebarImpl extends Sidebar {
+@@ -80,9 +83,12 @@ public class SidebarImpl extends Sidebar {
              team.setPlayerPrefix(Handler.componentToNMS(FormattedTextHelper.parse(line, ChatColor.WHITE)));
              generatedTeams.add(team);
              PacketHelperImpl.send(player, ClientboundSetPlayerTeamPacket.createAddOrModifyPacket(team, true));
@@ -1863,7 +1981,7 @@ index 5307e9fc47a217ca80043e330cf0b0c163ecbb9c..ebecb2328602a1b37570a915adcd7b43
  import net.minecraft.world.level.lighting.LevelLightEngine;
  import org.bukkit.Bukkit;
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
-index f6570aea104fdd1be2c66a57bcf2a00f83543fae..d320ccfa304be2fd38f6950f97fd5a63286b3bba 100644
+index c025960ec41d3dc44ff770389161a6ce101e066f..d53d5fbec27268257a29dc46c0b164e187ea3b8f 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/entities/CraftFakeArrowImpl.java
 @@ -3,10 +3,13 @@ package com.denizenscript.denizen.nms.v1_20.impl.entities;
@@ -2589,10 +2707,10 @@ index 1cfdc67205b670ea2af88256893744fdb83dcd60..83345caa51190f8954c0616e10c52fc8
      }
  }
 diff --git a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
-index e4dd9c036fd33d36bba57e150e70d0d54e3396da..01467a1321b237d1b59e348e4882d02eeac36f7d 100644
+index 85c3fae7c8efdff4023cd6087254ac0b1eca3e68..12087e532f8b9bc728d97924ce3dbd91393779ec 100644
 --- a/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
 +++ b/v1_20/src/main/java/com/denizenscript/denizen/nms/v1_20/impl/network/packets/PacketOutChatImpl.java
-@@ -24,7 +24,10 @@ public class PacketOutChatImpl extends PacketOutChat {
+@@ -23,7 +23,10 @@ public class PacketOutChatImpl extends PacketOutChat {
  
      public PacketOutChatImpl(ClientboundSystemChatPacket internal) {
          systemPacket = internal;
